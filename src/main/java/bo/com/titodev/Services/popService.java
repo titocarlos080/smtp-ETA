@@ -88,8 +88,8 @@ public class popService {
             socket.close();
 
             if (subject != "" && mailEmisor != "" && validatorUtils.validateEmail(mailEmisor)) {
-                subjectValidator validatorSubject = new subjectValidator(subject,
-                        mailEmisor);
+                subjectValidator validatorSubject = new subjectValidator(subject,mailEmisor);
+
                 validatorSubject.ValidateSuject();
 
             }

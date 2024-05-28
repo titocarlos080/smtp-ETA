@@ -19,7 +19,7 @@ public class rolController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        rol = new rolModel(0, params.get(0), params.get(1));
+        rol = new rolModel(0, params.get(0) );
         if (rol.create()) {
             respuesta = "Creado exitosamente.";
         } else {
@@ -33,7 +33,7 @@ public class rolController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        rol = new rolModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2));
+        rol = new rolModel(Integer.parseInt(params.get(0)), params.get(1));
         if (rol.update()) {
             respuesta = "Actualizado exitosamente.";
         } else {

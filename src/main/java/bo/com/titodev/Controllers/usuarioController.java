@@ -6,12 +6,12 @@ import bo.com.titodev.Models.*;
 import bo.com.titodev.Utils.*;
 public class usuarioController {
     
-    private usuarioModel usuario;
+    private usuariosModel usuario;
     private String respuesta;
     private rolController rol;
     
     public usuarioController() {
-        usuario = new usuarioModel();
+        usuario = new usuariosModel();
         rol = new rolController();
     }
     
@@ -20,8 +20,7 @@ public class usuarioController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        usuario = new usuarioModel(0, params.get(0), params.get(1), params.get(2), params.get(3),
-                Integer.parseInt(params.get(4)));
+        usuario = new usuariosModel(0, params.get(0), params.get(1), params.get(2),Integer.parseInt(params.get(4)));
         if (usuario.create()) {
             respuesta = "Creado exitosamente.";
         } else {
@@ -35,8 +34,7 @@ public class usuarioController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        usuario = new usuarioModel(Integer.parseInt(params.get(0)), params.get(1), params.get(2), params.get(3),
-                params.get(4), Integer.parseInt(params.get(5)));
+        usuario = new usuariosModel(Integer.parseInt(params.get(0)), params.get(1),params.get(2),params.get(3),Integer.parseInt(params.get(4)));
         if (usuario.update()) {
             respuesta = "Actualizado exitosamente.";
         } else {
@@ -74,7 +72,7 @@ public class usuarioController {
     }
     
     private void validateCreate(LinkedList<String> params) {
-        usuario = new usuarioModel();
+        usuario = new usuariosModel();
         if (params.size() != 5) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
@@ -109,7 +107,7 @@ public class usuarioController {
     }
     
     private void validateUpdate(LinkedList<String> params) {
-        usuario = new usuarioModel();
+        usuario = new usuariosModel();
         if (params.size() != 6) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;

@@ -8,31 +8,43 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 
-import bo.com.titodev.Services.conexionDB;
-
+import bo.com.titodev.Services.ConexionDB;
+ 
+ 
 public class rolModel {
     private int id;
     private String nombre;
-    private String descripcion;
 
-    private final conexionDB conexion;
-
+ 
     public rolModel() {
-        conexion = new conexionDB();
-    }
+     }
 
-    public rolModel(int id, String nombre, String descripcion) {
-        conexion = new conexionDB();
-        this.id = id;
+    public rolModel(int id, String nombre ) {
+         this.id = id;
         this.nombre = nombre;
-        this.descripcion = descripcion;
+    
+    }
+    // Getters y setters
+    public int getId() {
+        return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
     public boolean create() {
-        String sql = "INSERT INTO rol (nombre, descripcion) VALUES (?, ?)";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "INSERT INTO rol (nombre) VALUES ( ?)";
+        ConexionDB.getInstance();
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
-            ps.setString(2, descripcion);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -42,11 +54,10 @@ public class rolModel {
     }
 
     public boolean update() {
-        String sql = "UPDATE rol SET nombre = ?, descripcion = ? WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "UPDATE rol SET nombre = ? WHERE id = ?";
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
-            ps.setString(2, descripcion);
-            ps.setInt(3, id);
+             ps.setInt(2, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -57,7 +68,7 @@ public class rolModel {
 
     public boolean delete() {
         String sql = "DELETE FROM rol WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -69,7 +80,7 @@ public class rolModel {
 
     public boolean exist(int id) {
         String sql = "SELECT * FROM rol WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet resultado = ps.executeQuery()) {
                 return resultado.next(); // Devuelve true si hay un registro, false si no
@@ -99,12 +110,12 @@ public class rolModel {
         try {
             String query;
             if (params.size() == 0)
-                query = "SELECT id, nombre, descripcion FROM rol";
+                query = "SELECT id, nombre FROM rol";
             else
-                query = "SELECT id, nombre, descripcion FROM rol WHERE " + params.get(0) + " ILIKE '%" + params.get(1)
+                query = "SELECT id, nombre FROM rol WHERE " + params.get(0) + " ILIKE '%" + params.get(1)
                         + "%'";
 
-            Connection con = conexion.connect();
+            Connection con = ConexionDB.getInstance().connect();
             consulta = con.createStatement();
             resultado = consulta.executeQuery(query);
             ResultSetMetaData rsmd = resultado.getMetaData();
@@ -134,28 +145,7 @@ public class rolModel {
         return tabla;
     }
 
-    // Getters y setters
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+   
 }

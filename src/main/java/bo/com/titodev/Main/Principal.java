@@ -1,15 +1,19 @@
  
 package bo.com.titodev.Main;
 
+ 
 import bo.com.titodev.Services.popService;
  
  
 public class Principal {
  
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
  
-        popService pop = new popService();
-        int cantMails = pop.getCantidadEmails();      
+             
+        
+            popService pop = new popService();
+        int cantMails = pop.getCantidadEmails();     
+
         while ( true) {
             int newCantsMails = pop.getCantidadEmails();
             System.out.println("Escuchando EMAILS...");

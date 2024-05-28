@@ -10,40 +10,80 @@ import java.sql.Statement;
 import java.util.LinkedList;
 
 
-public class usuarioModel {
+public class usuariosModel {
 
     private int id;
-    private String nombre;
-    private String correo;
-    private String contraseña;
-    private String area;
-    private int rol_id;
+     private String email;
+    private String password;
+    private String password_resset;
+     private int rol_id;
 
-    private final conexionDB conexion;
+ 
+    public usuariosModel() {
+     }
 
-    public usuarioModel() {
-        conexion = new conexionDB();
+    public usuariosModel(int id, String email, String password, String password_resset, int rol_id) {
+         this.id = id;
+        this.email = email;
+        this.password = password;
+        this.password_resset = password_resset;
+         this.rol_id = rol_id;
     }
 
-    public usuarioModel(int id, String nombre, String correo, String contraseña, String area, int rol_id) {
-        conexion = new conexionDB();
+    // Getters y Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
         this.id = id;
-        this.nombre = nombre;
-        this.correo = correo;
-        this.contraseña = contraseña;
-        this.area = area;
+    }
+
+    public String getemail() {
+        return email;
+    }
+
+    public void setemail(String email) {
+        this.email = email;
+    }
+
+    public String getpassword() {
+        return password;
+    }
+
+    public void setpassword(String password) {
+        this.password = password;
+    }
+
+    public String getpassword_resset() {
+        return password_resset;
+    }
+
+    public void setpassword_resset(String password_resset) {
+        this.password_resset = password_resset;
+    }
+
+
+
+    public int getRol_id() {
+        return rol_id;
+    }
+
+    public void setRol_id(int rol_id) {
         this.rol_id = rol_id;
     }
 
+
+
     // Funciones
     public boolean create() {
-        String sql = "INSERT INTO usuario (nombre , correo, contraseña, area, rol_id) VALUES (?, ?, ?, ?, ?)";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nombre);
-            ps.setString(2, correo);
-            ps.setString(3, contraseña);
-            ps.setString(4, area);
-            ps.setInt(5, rol_id);
+        String sql = "INSERT INTO usuarios (email , password, password_resset, rol_id) VALUES (?, ?, ?,?)";
+        ConexionDB.getInstance();
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, password);
+            ps.setString(3, password_resset);
+            ps.setInt(4, rol_id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -54,13 +94,13 @@ public class usuarioModel {
 
     public boolean update() {
 
-        String sql = "UPDATE usuario SET nombre = ?, correo = ?, contraseña = ?, area = ?, rol_id = ? WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nombre);
-            ps.setString(2, correo);
-            ps.setString(3, contraseña);
-            ps.setString(4, area);
-            ps.setInt(5, rol_id);
+        String sql = "UPDATE usuarios SET email = ?, password = ?, password_resset = ?,   rol_id = ? WHERE id = ?";
+        ConexionDB.getInstance();
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, password);
+            ps.setString(3, password_resset);
+             ps.setInt(4, rol_id);
             ps.setInt(5, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -71,8 +111,8 @@ public class usuarioModel {
     }
 
     public boolean delete() {
-        String sql = "DELETE FROM usuario WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
@@ -83,8 +123,8 @@ public class usuarioModel {
     }
 
     public boolean exist(int id) {
-        String sql = "SELECT * FROM usuario WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql = "SELECT * FROM usuarios WHERE id = ?";
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet resultado = ps.executeQuery()) {
                 return resultado.next(); // Devuelve true si hay un registro, false si no
@@ -95,10 +135,10 @@ public class usuarioModel {
         }
     }
 
-    public boolean emailExist(String correo) {
-        String sql = "SELECT * FROM usuario WHERE correo = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, correo);
+    public boolean emailExist(String email) {
+        String sql = "SELECT * FROM usuarios WHERE email = ?";
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, email);
             try (ResultSet resultado = ps.executeQuery()) {
                 return resultado.next(); // Devuelve true si hay un registro, false si no
             }
@@ -108,11 +148,11 @@ public class usuarioModel {
         }
     }
 
-    public boolean validateRol(String correo, String rol) {
-        String sql = "SELECT * FROM usuario, rol WHERE rol.id = usuario.rol_id AND usuario.correo = ? AND rol.nombre = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, correo);
-            ps.setString(2, rol);
+    public boolean validateRol(String password, String email) {
+        String sql = "SELECT * FROM usuarios, roles WHERE roles.id = usuarios.rol_id AND usuarios.password = ? AND usuarios.email = ?";
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, password);
+            ps.setString(2, email);
             try (ResultSet resultado = ps.executeQuery()) {
                 return resultado.next(); // Devuelve true si hay un registro, false si no
             }
@@ -126,18 +166,16 @@ public class usuarioModel {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "<h1>Lista de usuarios</h1>"
+        tabla = "<h1>Lista de usuarioss</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
                 + "\n"
                 + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
                 + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">email</th>\n"
                 + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CORREO</th>\n"
-                + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">AREA</th>\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">password</th>\n"
                 + "\n"
                 + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ROL</th>\n"
                 + "\n";
@@ -145,13 +183,13 @@ public class usuarioModel {
         try {
             String query;
             if (params.size() == 0) {
-                query = "SELECT usuario.id, usuario.nombre, usuario.correo, usuario.area, rol.nombre as rol FROM usuario, rol WHERE usuario.rol_id = rol.id";
+                query = "SELECT usuarios.id, usuarios.email, usuarios.password, roles.nombre as rol FROM usuarios, roles WHERE usuarios.rol_id = roles.id";
             } else {
-                query = "SELECT usuario.id, usuario.nombre, usuario.correo, usuario.area, rol.nombre as rol FROM usuario, rol WHERE usuario.rol_id = rol.id AND "
+                query = "SELECT usuarios.id, usuarios.email, usuarios.password, usuarios.area, rol.email as rol FROM usuarios, rol WHERE usuarios.rol_id = roles.id AND "
                         + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
             }
 
-            Connection con = conexion.connect();
+            Connection con = ConexionDB.getInstance().connect();
             consulta = con.createStatement();
             resultado = consulta.executeQuery(query);
             ResultSetMetaData rsmd = resultado.getMetaData();
@@ -181,52 +219,4 @@ public class usuarioModel {
         return tabla;
     }
 
-    // Getters y Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getContraseña() {
-        return contraseña;
-    }
-
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
-    }
-
-    public int getRol_id() {
-        return rol_id;
-    }
-
-    public void setRol_id(int rol_id) {
-        this.rol_id = rol_id;
-    }
 }

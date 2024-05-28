@@ -33,9 +33,9 @@ public class smtpService {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(USER)); // Set the sender email address
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor)); // Set the recipient email address
-        message.setSubject("RESPUESTA: " ); // Set the subject of the email
-        message.setText(mensaje); // Set the text content of the email
-
+        message.setSubject("RESPUESTA:" ); // Set the subject of the email
+        
+        message.setContent(mensaje, "text/html; charset=utf-8");
         // Send the email
         Transport.send(message);
             System.out.println("Email sent successfully.");

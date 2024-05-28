@@ -1,5 +1,5 @@
 package bo.com.titodev.Models;
-import bo.com.titodev.Services.*;
+import bo.com.titodev.Services.ConexionDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,11 +20,9 @@ public class docenteModel {
     private String ci;
     private String ci_expedicion;
     private String facturacion;
-    private conexionDB conexion;
-
+ 
     public docenteModel() {
-        conexion = new conexionDB();
-    }
+     }
 
     public docenteModel(int id, String honorifico, String nombre, String apellido, String correo, String telefono,
             String ci, String ci_expedicion, String facturacion) {
@@ -37,13 +35,13 @@ public class docenteModel {
         this.ci = ci;
         this.ci_expedicion = ci_expedicion;
         this.facturacion = facturacion;
-        conexion = new conexionDB();
-    }
+     }
 
     // Funciones
     public boolean create() {
         String sql = "INSERT INTO docente (honorifico, nombre, apellido, correo, telefono, ci, ci_expedicion, facturacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+        ConexionDB.getInstance();
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, this.honorifico);
             ps.setString(2, this.nombre);
             ps.setString(3, this.apellido);
@@ -64,7 +62,7 @@ public class docenteModel {
 
     public boolean update() {
         String sql = "UPDATE docente SET honorifico = ?, nombre = ?, apellido = ?, correo = ?, telefono = ?, ci = ?, ci_expedicion = ?, facturacion = ? WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, this.honorifico);
             ps.setString(2, this.nombre);
             ps.setString(3, this.apellido);
@@ -86,7 +84,7 @@ public class docenteModel {
 
     public boolean delete() {
         String sql = "DELETE FROM docente WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, this.id);
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -100,7 +98,7 @@ public class docenteModel {
 
     public boolean exist(int id) {
         String sql = "SELECT * FROM docente WHERE id = ?";
-        try (Connection con = conexion.connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet resultado = ps.executeQuery()) {
                 return resultado.next(); // Devuelve true si hay un registro, false si no
@@ -147,7 +145,7 @@ public class docenteModel {
                 query = "SELECT id, honorifico, nombre, apellido, correo, ci, ci_expedicion, telefono, facturacion FROM docente WHERE "
                         + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
 
-            Connection con = conexion.connect();
+            Connection con = ConexionDB.getInstance().connect();
             consulta = con.createStatement();
             resultado = consulta.executeQuery(query);
             ResultSetMetaData rsmd = resultado.getMetaData();
