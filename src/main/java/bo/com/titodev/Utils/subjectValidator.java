@@ -162,40 +162,15 @@ public class subjectValidator {
             return;
         }
 
-        if (opcion.toLowerCase().equals("estudiante")) {
-            estudianteController estudiante = new estudianteController();
-            LinkedList<String> paramsList = estudiante.createList(parametros);
-            switch (opcionArray[0].toLowerCase()) {
-                case "list":
-                    response = estudiante.getAll(paramsList);
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
-                case "create":
-                    response = estudiante.create(paramsList);
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
-                case "update":
-                    response = estudiante.update(paramsList);
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
-                case "delete":
-                    response = estudiante.delete(Integer.parseInt(paramsList.get(0)));
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
-                default:
-                    smtp.sendEmail(emailEmisor,
-                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
-                    break;
-            }
-            return;
-        }
-
        
-        
        
         smtp.sendEmail(emailEmisor, "Comando incorrecto, Verifique que este enviando bien los comandos");
     }
-
+ 
+          
+         
+ 
+    
     private String AllComand() {
         return "<h1>ESCUELA ETA</h1>"
                 + "<table style=\" border-collapse: collapse; width: 100%; border: 1px solid black; padding: 8px;\"> \n \n"
@@ -240,6 +215,7 @@ public class subjectValidator {
                 + "</table>";
 
     }
-
-
+ 
 }
+
+ 

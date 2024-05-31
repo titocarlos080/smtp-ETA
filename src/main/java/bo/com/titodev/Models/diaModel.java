@@ -3,27 +3,22 @@ package bo.com.titodev.Models;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.LinkedList;
-
 import bo.com.titodev.Services.ConexionDB;
- 
- 
-public class rolModel {
+
+public class diaModel { 
     private int id;
     private String nombre;
 
- 
-    public rolModel() {
-     }
-
-    public rolModel(int id, String nombre ) {
-         this.id = id;
-        this.nombre = nombre;
-    
+    public diaModel() {
     }
+
+    public diaModel(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
     // Getters y setters
     public int getId() {
         return id;
@@ -40,9 +35,10 @@ public class rolModel {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    // Métodos CRUD
     public boolean create() {
-        String sql = "INSERT INTO rol (nombre) VALUES ( ?)";
-        ConexionDB.getInstance();
+        String sql = "INSERT INTO dias (nombre) VALUES (?)";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
             int rowsAffected = ps.executeUpdate();
@@ -54,10 +50,10 @@ public class rolModel {
     }
 
     public boolean update() {
-        String sql = "UPDATE rol SET nombre = ? WHERE id = ?";
+        String sql = "UPDATE dias SET nombre = ? WHERE id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
-             ps.setInt(2, id);
+            ps.setInt(2, id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -67,7 +63,7 @@ public class rolModel {
     }
 
     public boolean delete() {
-        String sql = "DELETE FROM rol WHERE id = ?";
+        String sql = "DELETE FROM dias WHERE id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -79,7 +75,7 @@ public class rolModel {
     }
 
     public boolean exist(int id) {
-        String sql = "SELECT * FROM rol WHERE id = ?";
+        String sql = "SELECT * FROM dias WHERE id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet resultado = ps.executeQuery()) {
@@ -93,59 +89,41 @@ public class rolModel {
 
     public String getAll(LinkedList<String> params) {
         String tabla = "";
-        Statement consulta;
+        PreparedStatement ps = null;
         ResultSet resultado = null;
-        tabla = "<h1>Lista de roles</h1>"
+        tabla = "<h1>Lista de días</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
-                + "\n"
                 + "  <tr>\n"
-                + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
-                + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
-                + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">DESCRIPCION</th>\n"
-                + "\n";
+                + "    <th style=\"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
+                + "    <th style=\"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
+                + "  </tr>\n";
 
         try {
             String query;
-            if (params.size() == 0)
-                query = "SELECT id, nombre FROM rol";
-            else
-                query = "SELECT id, nombre FROM rol WHERE " + params.get(0) + " LIKE '%" + params.get(1)
-                        + "%'";
-
-            Connection con = ConexionDB.getInstance().connect();
-            consulta = con.createStatement();
-            resultado = consulta.executeQuery(query);
-            ResultSetMetaData rsmd = resultado.getMetaData();
-            int cantidadColumnas = rsmd.getColumnCount();
-            while (resultado.next()) {
-                tabla = tabla
-                        + "  <tr>\n"
-                        + "\n";
-                for (int i = 0; i < cantidadColumnas; i++) {
-                    tabla = tabla
-                            + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">"
-                            + resultado.getString(i + 1) + "</td>\n"
-                            + "\n";
-                }
-                tabla = tabla
-                        + "  </tr>\n"
-                        + "\n";
+            if (params.size() == 0) {
+                query = "SELECT * FROM dias";
+                Connection con = ConexionDB.getInstance().connect();
+                ps = con.prepareStatement(query);
+            } else {
+                query = "SELECT * FROM dias WHERE " + params.get(0) + " LIKE ?";
+                Connection con = ConexionDB.getInstance().connect();
+                ps = con.prepareStatement(query);
+                ps.setString(1, "%" + params.get(1) + "%");
             }
-            tabla = tabla
-                    + "\n"
-                    + "</table>";
-            consulta.close();
-            con.close();
+
+            resultado = ps.executeQuery();
+            while (resultado.next()) {
+                tabla += "  <tr>\n"
+                        + "    <td style=\"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getInt("id") + "</td>\n"
+                        + "    <td style=\"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("nombre") + "</td>\n"
+                        + "  </tr>\n";
+            }
+            tabla += "</table>";
+            ps.close();
+            resultado.close();
         } catch (SQLException e) {
             tabla = "No se pudieron listar los datos.";
         }
         return tabla;
     }
-
-
-
-   
 }

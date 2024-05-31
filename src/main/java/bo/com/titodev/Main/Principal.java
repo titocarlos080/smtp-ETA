@@ -3,18 +3,17 @@ package bo.com.titodev.Main;
 
  
 import bo.com.titodev.Services.popService;
+import bo.com.titodev.Utils.subjectValidator;
  
  
 public class Principal {
- 
+    
+    
     public static void main(String[] args)  {
- 
-             
-        
-            popService pop = new popService();
+         
+        popService pop = new popService();
         int cantMails = pop.getCantidadEmails();     
-
-        while ( true) {
+         while ( true) {
             int newCantsMails = pop.getCantidadEmails();
             System.out.println("Escuchando EMAILS...");
             if (cantMails != newCantsMails) {
@@ -35,5 +34,5 @@ public class Principal {
         }
  
     }
-
+ 
 }
