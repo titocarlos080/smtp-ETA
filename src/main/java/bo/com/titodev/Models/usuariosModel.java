@@ -148,11 +148,11 @@ public class usuariosModel {
         }
     }
 
-    public boolean validateRol(String password, String email) {
-        String sql = "SELECT * FROM usuarios, roles WHERE roles.id = usuarios.rol_id AND usuarios.password = ? AND usuarios.email = ?";
+    public boolean validateRol(String email, String rol) {
+        String sql = "SELECT * FROM usuarios, roles WHERE roles.id = usuarios.rol_id AND usuarios.email = ? AND rol.nombre = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, password);
-            ps.setString(2, email);
+            ps.setString(2, rol);
             try (ResultSet resultado = ps.executeQuery()) {
                 return resultado.next(); // Devuelve true si hay un registro, false si no
             }

@@ -99,7 +99,7 @@ public class subjectValidator {
         }
 
         if (opcion.toLowerCase().equals("usuario")) {
-            if (!this.userValidate.validateRol(this.emailEmisor, "Administrador")) {
+            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
@@ -131,7 +131,7 @@ public class subjectValidator {
         }
 
         if (opcion.toLowerCase().equals("rol")) {
-            if (!this.userValidate.validateRol(this.emailEmisor, "Administrador")) {
+            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
