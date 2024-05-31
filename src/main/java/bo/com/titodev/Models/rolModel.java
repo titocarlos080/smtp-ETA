@@ -41,7 +41,7 @@ public class rolModel {
         this.nombre = nombre;
     }
     public boolean create() {
-        String sql = "INSERT INTO rol (nombre) VALUES ( ?)";
+        String sql = "INSERT INTO roles (nombre) VALUES ( ?)";
         ConexionDB.getInstance();
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
@@ -54,7 +54,7 @@ public class rolModel {
     }
 
     public boolean update() {
-        String sql = "UPDATE rol SET nombre = ? WHERE id = ?";
+        String sql = "UPDATE roles SET nombre = ? WHERE id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
              ps.setInt(2, id);
@@ -67,7 +67,7 @@ public class rolModel {
     }
 
     public boolean delete() {
-        String sql = "DELETE FROM rol WHERE id = ?";
+        String sql = "DELETE FROM roles WHERE id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -79,7 +79,7 @@ public class rolModel {
     }
 
     public boolean exist(int id) {
-        String sql = "SELECT * FROM rol WHERE id = ?";
+        String sql = "SELECT * FROM roles WHERE id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet resultado = ps.executeQuery()) {
@@ -110,9 +110,9 @@ public class rolModel {
         try {
             String query;
             if (params.size() == 0)
-                query = "SELECT id, nombre FROM rol";
+                query = "SELECT id, nombre FROM roles";
             else
-                query = "SELECT id, nombre FROM rol WHERE " + params.get(0) + " LIKE '%" + params.get(1)
+                query = "SELECT id, nombre FROM roles WHERE " + params.get(0) + " LIKE '%" + params.get(1)
                         + "%'";
 
             Connection con = ConexionDB.getInstance().connect();

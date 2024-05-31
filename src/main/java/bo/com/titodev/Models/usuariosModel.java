@@ -149,9 +149,9 @@ public class usuariosModel {
     }
 
     public boolean validateRol(String email, String rol) {
-        String sql = "SELECT * FROM usuarios, roles WHERE roles.id = usuarios.rol_id AND usuarios.email = ? AND rol.nombre = ?";
+        String sql = "SELECT * FROM usuarios, roles WHERE roles.id = usuarios.rol_id AND usuarios.email = ? AND roles.nombre = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, password);
+            ps.setString(1, email);
             ps.setString(2, rol);
             try (ResultSet resultado = ps.executeQuery()) {
                 return resultado.next(); // Devuelve true si hay un registro, false si no
@@ -186,7 +186,7 @@ public class usuariosModel {
                 query = "SELECT usuarios.id, usuarios.email, usuarios.password, roles.nombre as rol FROM usuarios, roles WHERE usuarios.rol_id = roles.id";
             } else {
                 query = "SELECT usuarios.id, usuarios.email, usuarios.password, usuarios.area, rol.email as rol FROM usuarios, rol WHERE usuarios.rol_id = roles.id AND "
-                        + params.get(0) + " ILIKE '%" + params.get(1) + "%'";
+                        + params.get(0) + " LIKE '%" + params.get(1) + "%'";
             }
 
             Connection con = ConexionDB.getInstance().connect();

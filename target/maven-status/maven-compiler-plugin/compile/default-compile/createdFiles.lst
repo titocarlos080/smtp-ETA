@@ -1,4 +1,5 @@
 bo\com\titodev\Models\egresoModel.class
+bo\com\titodev\Controllers\gestionController.class
 bo\com\titodev\Models\carreraModel.class
 bo\com\titodev\Models\horarioModel.class
 bo\com\titodev\Models\estudianteModel.class

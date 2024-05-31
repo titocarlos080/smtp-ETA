@@ -9,7 +9,7 @@ public class ConexionDB {
     private final String DB = "db_grupo05sc";
     private final String USER = "grupo05sc";
     private final String PASSWORD = "grup005grup005";
-    private final String URL = "jdbc:postgresql://localhost:5432/" + DB;
+    private final String URL = "jdbc:postgresql://mail.tecnoweb.org.bo:5432/" + DB;
     private Connection conn;
     private static ConexionDB instance;
 

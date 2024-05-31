@@ -34,6 +34,7 @@ public class subjectValidator {
             smtp.sendEmail(emailEmisor, AllComand());
             return;
         }
+        
         int parentesis1 = subject.indexOf("[");
         int parentesis2 = subject.indexOf("]");
         int espacio = subject.indexOf(" ");
@@ -42,12 +43,12 @@ public class subjectValidator {
                     "No se reconoce el formato indicado. Verifique que está utilizando los corchetes( [] ) para realizar la petición.");
             return;
         }
-        if (parentesis1 > parentesis2) {
+        if (parentesis1 > parentesis2) { // ][
             smtp.sendEmail(emailEmisor,
                     "No se reconoce el formato indicado. Verifique que está utilizando los corchetes( [] ) de forma ordenada.");
             return;
         }
-        if (parentesis1 < 0) {
+        if (parentesis1 < 0) {  
             smtp.sendEmail(emailEmisor,
                     "No se reconoce el formato indicado. Verifique que está enviando los datos dentro de un encabezado.");
             return;
@@ -57,8 +58,9 @@ public class subjectValidator {
                     "No se reconoce el formato indicado. Verifique que exista un espacio entre el comando y los parametros.");
             return;
         }
+        
         subject = subject.trim();
-        int firstSpace = subject.indexOf(" ");
+        int firstSpace = subject.indexOf(" "); // LIST-ROLES []
         int parentesis1Aux = subject.indexOf("[");
         if (firstSpace == -1 || parentesis1Aux == -1) {
             smtp.sendEmail(emailEmisor,
@@ -70,9 +72,9 @@ public class subjectValidator {
                     "No se reconoce el formato indicado. Verifique que exista un espacio entre el comando y los parametros.");
             return;
         }
-        String command = subject.substring(0, firstSpace);
+        String command = subject.substring(0, firstSpace);// LIST-ROLES
 
-        String[] opcionArray = command.split("-"); 
+        String[] opcionArray = command.split("-");// LIST,ROLES
         if (opcionArray.length != 2) {
             smtp.sendEmail(emailEmisor,
                     "No se reconoce el formato indicado. Verifique que exista un '-' en el comando.");
@@ -84,13 +86,13 @@ public class subjectValidator {
 
     private void OpcionList() {
         String response = "";
-        int firstSpace = subject.indexOf(" ");
-        String command = subject.substring(0, firstSpace);
-        String params = subject.substring(firstSpace + 1, subject.length());
-        String[] opcionArray = command.split("-");
-        params = params.replace("[", "");
+        int firstSpace = subject.indexOf(" "); //LIST-ROLES []
+        String command = subject.substring(0, firstSpace);//LIST-ROLES
+        String params = subject.substring(firstSpace + 1, subject.length());// [] 
+        String[] opcionArray = command.split("-");//LIST,ROLES
+        params = params.replace("[", ""); // 
         params = params.replace("]", "");
-        String opcion = opcionArray[1];
+        String opcion = opcionArray[1]; // ROLES
         String[] parametros;
         if (params.length() >= 1) {
             parametros = params.split(","); 
@@ -98,7 +100,7 @@ public class subjectValidator {
             parametros = new String[0];
         }
 
-        if (opcion.toLowerCase().equals("usuario")) {
+        if (opcion.toLowerCase().equals("usuarios")) {
             if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
@@ -130,7 +132,7 @@ public class subjectValidator {
             return;
         }
 
-        if (opcion.toLowerCase().equals("rol")) {
+        if (opcion.toLowerCase().equals("roles")) {
             if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
@@ -180,36 +182,36 @@ public class subjectValidator {
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar rol</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-ROL [NOMBRE]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-ROLES [NOMBRE]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar rol</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-ROL [NOMBRE]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-ROLES [NOMBRE]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar rol</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-ROL [id]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-ROLES [id]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar roles</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-ROL [] || LIST-ROL [KEY, VALOR]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-ROLES [] || LIST-ROLES [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
 
                 + "<tr> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar usuario</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-USUARIO [NOMBRE, CORREO, CONTRASEÑA,  ROL_ID]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar usuarios</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-USUARIOS [NOMBRE, CORREO, CONTRASEÑA,  ROL_ID]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar usuario</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-USUARIO [ID, NOMBRE, CORREO, CONTRASEÑA,  ROL_ID]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-USUARIOS [ID, NOMBRE, CORREO, CONTRASEÑA,  ROL_ID]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar usuario</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-USUARIO [id]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-USUARIOS [id]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar usuarios</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-USUARIO [] || LIST-USUARIO [KEY, VALOR]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-USUARIOS [] || LIST-USUARIO [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
           
                 + "</table>";
