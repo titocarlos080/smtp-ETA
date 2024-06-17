@@ -86,10 +86,9 @@ CREATE TABLE carreras_materias (
     FOREIGN KEY(nivel_id) REFERENCES niveles(id),
     FOREIGN KEY(materia_sigla) REFERENCES materias(sigla),
     FOREIGN KEY(carrera_sigla) REFERENCES carreras(sigla)
-    
-
 );
 
+-- ////////////////////////////////////////////////////////////////////////////
 CREATE TABLE grupos (
     sigla VARCHAR(10) NOT NULL PRIMARY KEY,
     descripcion VARCHAR(255) NOT NULL,

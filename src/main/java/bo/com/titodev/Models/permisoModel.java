@@ -10,16 +10,16 @@ import java.util.LinkedList;
 
 import bo.com.titodev.Services.ConexionDB;
  
- 
-public class rolModel {
+  
+public class permisoModel {
     private int id;
     private String nombre;
 
  
-    public rolModel() {
+    public permisoModel() {
      }
 
-    public rolModel(int id, String nombre ) {
+    public permisoModel(int id, String nombre ) {
          this.id = id;
         this.nombre = nombre;
     
@@ -41,7 +41,7 @@ public class rolModel {
         this.nombre = nombre;
     }
     public boolean create() {
-        String sql = "INSERT INTO roles (nombre) VALUES ( ?)";
+        String sql = "INSERT INTO permisos (nombre) VALUES ( ?)";
         ConexionDB.getInstance();
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
@@ -54,7 +54,7 @@ public class rolModel {
     }
 
     public boolean update() {
-        String sql = "UPDATE roles SET nombre = ? WHERE id = ?";
+        String sql = "UPDATE permisos SET nombre = ? WHERE id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
              ps.setInt(2, id);
@@ -67,7 +67,7 @@ public class rolModel {
     }
 
     public boolean delete() {
-        String sql = "DELETE FROM roles WHERE id = ?";
+        String sql = "DELETE FROM permisos WHERE id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             int rowsAffected = ps.executeUpdate();
@@ -79,7 +79,7 @@ public class rolModel {
     }
 
     public boolean exist(int id) {
-        String sql = "SELECT * FROM roles WHERE id = ?";
+        String sql = "SELECT * FROM permisos WHERE id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet resultado = ps.executeQuery()) {
@@ -95,7 +95,7 @@ public class rolModel {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "<h1>Lista de roles</h1>"
+        tabla = "<h1>Lista de permisos</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
@@ -108,9 +108,9 @@ public class rolModel {
         try {
             String query;
             if (params.size() == 0)
-                query = "SELECT id, nombre FROM roles";
+                query = "SELECT id, nombre FROM permisos";
             else
-                query = "SELECT id, nombre FROM roles WHERE " + params.get(0) + " LIKE '%" + params.get(1)
+                query = "SELECT id, nombre FROM permisos WHERE " + params.get(0) + " LIKE '%" + params.get(1)
                         + "%'";
 
             Connection con = ConexionDB.getInstance().connect();

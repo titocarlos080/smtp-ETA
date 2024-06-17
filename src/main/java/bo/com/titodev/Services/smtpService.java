@@ -33,10 +33,19 @@ public class smtpService {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(USER)); // Set the sender email address
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor)); // Set the recipient email address
-        message.setSubject("RESPUESTA:" ); // Set the subject of the email
+        message.setSubject("########### RESPUESTA: ETA ##################" ); // Set the subject of the email
         
-        message.setContent(mensaje, "text/html; charset=utf-8");
         // Send the email
+        String mensajeCompleto = "<html>" +
+        "<body style='font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px;'>" +
+        "<div style='max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);'>" +
+        mensaje +
+        "</div>" +
+        "</body>" +
+        "</html>";
+        
+        message.setContent(mensajeCompleto, "text/html; charset=utf-8");
+
         Transport.send(message);
             System.out.println("Email sent successfully.");
         } catch (MessagingException ex) {

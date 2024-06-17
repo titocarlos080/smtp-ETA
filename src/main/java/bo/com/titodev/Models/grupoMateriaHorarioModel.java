@@ -1,4 +1,4 @@
-package bo.com.titodev.Models;
+ package bo.com.titodev.Models;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,40 +7,53 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import bo.com.titodev.Services.ConexionDB;
 
-public class diaModel { 
-    private int id;
-    private String nombre;
+public class grupoMateriaHorarioModel {
+    private String grupoSigla;
+    private int horarioId;
+    private int diaId;
 
-    public diaModel() {
+    public grupoMateriaHorarioModel() {
+    
     }
 
-    public diaModel(int id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
+    public grupoMateriaHorarioModel(String grupoSigla, int horarioId, int diaId) {
+        this.grupoSigla = grupoSigla;
+        this.horarioId = horarioId;
+        this.diaId = diaId;
     }
 
     // Getters y setters
-    public int getId() {
-        return id;
+    public String getGrupoSigla() {
+        return grupoSigla;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setGrupoSigla(String grupoSigla) {
+        this.grupoSigla = grupoSigla;
     }
 
-    public String getNombre() {
-        return nombre;
+    public int getHorarioId() {
+        return horarioId;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setHorarioId(int horarioId) {
+        this.horarioId = horarioId;
+    }
+
+    public int getDiaId() {
+        return diaId;
+    }
+
+    public void setDiaId(int diaId) {
+        this.diaId = diaId;
     }
 
     // Métodos CRUD
     public boolean create() {
-        String sql = "INSERT INTO dias (nombre) VALUES (?)";
+        String sql = "INSERT INTO grupos_horarios (grupo_sigla, horario_id, dia_id) VALUES (?, ?, ?)";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nombre);
+            ps.setString(1, grupoSigla);
+            ps.setInt(2, horarioId);
+            ps.setInt(3, diaId);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -50,10 +63,11 @@ public class diaModel {
     }
 
     public boolean update() {
-        String sql = "UPDATE dias SET nombre = ? WHERE id = ?";
+        String sql = "UPDATE grupos_horarios SET dia_id = ? WHERE grupo_sigla = ? AND horario_id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nombre);
-            ps.setInt(2, id);
+            ps.setInt(1, diaId);
+            ps.setString(2, grupoSigla);
+            ps.setInt(3, horarioId);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -63,9 +77,10 @@ public class diaModel {
     }
 
     public boolean delete() {
-        String sql = "DELETE FROM dias WHERE id = ?";
+        String sql = "DELETE FROM grupos_horarios WHERE grupo_sigla = ? AND horario_id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setString(1, grupoSigla);
+            ps.setInt(2, horarioId);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -74,10 +89,11 @@ public class diaModel {
         }
     }
 
-    public boolean exist(int id) {
-        String sql = "SELECT * FROM dias WHERE id = ?";
+    public boolean exist(String grupoSigla, int horarioId) {
+        String sql = "SELECT * FROM grupos_horarios WHERE grupo_sigla = ? AND horario_id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setString(1, grupoSigla);
+            ps.setInt(2, horarioId);
             try (ResultSet resultado = ps.executeQuery()) {
                 return resultado.next(); // Devuelve true si hay un registro, false si no
             }
@@ -91,31 +107,33 @@ public class diaModel {
         String tabla = "";
         PreparedStatement ps = null;
         ResultSet resultado = null;
-        tabla = "<h1>Lista de días</h1>"
+        tabla = "<h1>Lista de horarios de grupos</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "  <tr>\n"
-                + "    <th style=\"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
-                + "    <th style=\"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">Grupo Sigla</th>\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">Horario ID</th>\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">Día ID</th>\n"
                 + "  </tr>\n";
 
         try {
             String query;
             if (params.size() == 0) {
-                query = "SELECT * FROM dias";
+                query = "SELECT * FROM grupos_horarios";
                 Connection con = ConexionDB.getInstance().connect();
                 ps = con.prepareStatement(query);
             } else {
-                query = "SELECT * FROM dias WHERE " + params.get(0) + " LIKE ?";
+                query = "SELECT * FROM grupos_horarios WHERE " + params.get(0) + " LIKE ?";
                 Connection con = ConexionDB.getInstance().connect();
                 ps = con.prepareStatement(query);
                 ps.setString(1, "%" + params.get(1) + "%");
             }
- 
+
             resultado = ps.executeQuery();
             while (resultado.next()) {
                 tabla += "  <tr>\n"
-                        + "    <td style=\"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getInt("id") + "</td>\n"
-                        + "    <td style=\"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("nombre") + "</td>\n"
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("grupo_sigla") + "</td>\n"
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getInt("horario_id") + "</td>\n"
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getInt("dia_id") + "</td>\n"
                         + "  </tr>\n";
             }
             tabla += "</table>";

@@ -18,7 +18,8 @@ public class egresoModel {
     public egresoModel() {
     }
 
-    public egresoModel(double monto, java.sql.Date fecha, String concepto, int gestionCodigo) {
+    public egresoModel(int id,double monto, java.sql.Date fecha, String concepto, int gestionCodigo) {
+        this.id = id;
         this.monto = monto;
         this.fecha = fecha;
         this.concepto = concepto;

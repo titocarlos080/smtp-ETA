@@ -7,17 +7,17 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import bo.com.titodev.Services.ConexionDB;
 
-public class grupoModel {
+public class grupoMateriaModel {
     private String sigla;
     private String descripcion;
     private String materia_sigla;
     private String carrera_sigla;
     private int docente_id;
 
-    public grupoModel() {
+    public grupoMateriaModel() {
     }
 
-    public grupoModel(String sigla, String descripcion, String materia_sigla, String carrera_sigla, int docente_id) {
+    public grupoMateriaModel(String sigla, String descripcion, String materia_sigla, String carrera_sigla, int docente_id) {
         this.sigla = sigla;
         this.descripcion = descripcion;
         this.materia_sigla = materia_sigla;

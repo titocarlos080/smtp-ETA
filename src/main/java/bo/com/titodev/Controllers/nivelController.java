@@ -5,13 +5,13 @@ import java.util.LinkedList;
 import bo.com.titodev.Models.*;
 import bo.com.titodev.Utils.*;
 
-public class rolController {
+public class nivelController {
 
-    private rolModel rol;
+    private nivelModel nivel;
     private String respuesta;
     
-    public rolController() {
-        rol = new rolModel();
+    public nivelController() {
+        nivel = new nivelModel();
     }
     
     public String create(LinkedList<String> params) {
@@ -19,8 +19,8 @@ public class rolController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        rol = new rolModel(0, params.get(0) );
-        if (rol.create()) {
+        nivel = new nivelModel(0, params.get(0) );
+        if (nivel.create()) {
             respuesta = "Creado exitosamente.";
         } else {
             respuesta = "No se pudo crear.";
@@ -33,8 +33,8 @@ public class rolController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        rol = new rolModel(Integer.parseInt(params.get(0)), params.get(1));
-        if (rol.update()) {
+        nivel = new nivelModel(Integer.parseInt(params.get(0)), params.get(1));
+        if (nivel.update()) {
             respuesta = "Actualizado exitosamente.";
         } else {
             respuesta = "No se pudo actualizar.";
@@ -46,8 +46,8 @@ public class rolController {
         if (!validatorUtils.validateNumber(String.valueOf(id))) {
             return "El id debe ser un numero";
         }
-        rol.setId(id);
-        if (rol.delete()) {
+        nivel.setId(id);
+        if (nivel.delete()) {
             respuesta = "Eliminado exitosamente.";
         } else {
             respuesta = "No se pudo eliminar.";
@@ -56,16 +56,16 @@ public class rolController {
     }
     
     public String getAll(LinkedList<String> params) {
-        return rol.getAll(params);
+        return nivel.getAll(params);
     }
     
     public boolean exist(int id) {
-        return rol.exist(id);
+        return nivel.exist(id);
     }
     
     private void validateCreate(LinkedList<String> params) {
-        rol = new rolModel();
-        if (params.size() != 1) {
+        nivel = new nivelModel();
+        if (params.size() != 2) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
@@ -73,12 +73,15 @@ public class rolController {
             this.respuesta = "El nombre no puede ser vacio";
             return;
         }
-        
+        if (!validatorUtils.validateString(params.get(1))) {
+            this.respuesta = "La descripcion no puede ser vacio";
+            return;
+        }
     }
     
     private void validateUpdate(LinkedList<String> params) {
-        rol = new rolModel();
-        if (params.size() != 2) {
+        nivel = new nivelModel();
+        if (params.size() != 3) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
         }
@@ -90,7 +93,10 @@ public class rolController {
             this.respuesta = "El nombre no puede ser vacio";
             return;
         }
-        
+        if (!validatorUtils.validateString(params.get(2))) {
+            this.respuesta = "La descripcion no puede ser vacio";
+            return;
+        }
     }
     
     public LinkedList<String> createList(String[] params) {

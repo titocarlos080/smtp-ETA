@@ -20,7 +20,7 @@ public class usuarioController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        usuario = new usuariosModel(0, params.get(0), params.get(1), params.get(2),Integer.parseInt(params.get(4)));
+        usuario = new usuariosModel(0, params.get(0), params.get(1), params.get(2),Integer.valueOf(params.get(4)));
         if (usuario.create()) {
             respuesta = "Creado exitosamente.";
         } else {
@@ -34,7 +34,7 @@ public class usuarioController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        usuario = new usuariosModel(Integer.parseInt(params.get(0)), params.get(1),params.get(2),params.get(3),Integer.parseInt(params.get(4)));
+        usuario = new usuariosModel(Integer.parseInt(params.get(0)), params.get(1),params.get(2),params.get(3),Integer.valueOf (params.get(4)));
         if (usuario.update()) {
             respuesta = "Actualizado exitosamente.";
         } else {

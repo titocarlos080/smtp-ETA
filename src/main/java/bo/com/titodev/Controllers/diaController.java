@@ -5,13 +5,13 @@ import java.util.LinkedList;
 import bo.com.titodev.Models.*;
 import bo.com.titodev.Utils.*;
 
-public class rolController {
+public class diaController {
 
-    private rolModel rol;
+    private diaModel rol;
     private String respuesta;
     
-    public rolController() {
-        rol = new rolModel();
+    public diaController() {
+        rol = new diaModel();
     }
     
     public String create(LinkedList<String> params) {
@@ -19,7 +19,7 @@ public class rolController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        rol = new rolModel(0, params.get(0) );
+        rol = new diaModel(0, params.get(0) );
         if (rol.create()) {
             respuesta = "Creado exitosamente.";
         } else {
@@ -33,7 +33,7 @@ public class rolController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        rol = new rolModel(Integer.parseInt(params.get(0)), params.get(1));
+        rol = new diaModel(Integer.parseInt(params.get(0)), params.get(1));
         if (rol.update()) {
             respuesta = "Actualizado exitosamente.";
         } else {
@@ -64,7 +64,7 @@ public class rolController {
     }
     
     private void validateCreate(LinkedList<String> params) {
-        rol = new rolModel();
+        rol = new diaModel();
         if (params.size() != 1) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;
@@ -77,7 +77,7 @@ public class rolController {
     }
     
     private void validateUpdate(LinkedList<String> params) {
-        rol = new rolModel();
+        rol = new diaModel();
         if (params.size() != 2) {
             this.respuesta = "La cantidad de parametros es incorrecta";
             return;

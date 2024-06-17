@@ -5,7 +5,7 @@ import java.net.*;
 
 import bo.com.titodev.Utils.*;
 
-public class popService {
+public class popServiceGmail {
 
     // Constantes para la configuración del servidor POP3
     private final String SERVER = "gonzalotech.ciencia.bo";//"mail.tecnoweb.org.bo";
@@ -14,7 +14,7 @@ public class popService {
     private final int PUERTO = 110;
 
     // Constructor de la clase
-    public popService() {
+    public popServiceGmail() {
     }
 
     /**

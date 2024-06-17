@@ -10,41 +10,45 @@ import java.util.LinkedList;
 
 import bo.com.titodev.Services.ConexionDB;
  
- 
-public class rolModel {
-    private int id;
-    private String nombre;
+  
+public class rolPermisoModel {
+    private int rol_id;
+    private int permiso_id;
 
  
-    public rolModel() {
+    public rolPermisoModel() {
      }
 
-    public rolModel(int id, String nombre ) {
-         this.id = id;
-        this.nombre = nombre;
+    public rolPermisoModel(int rol_id, int permiso_id ) {
+         this.rol_id = rol_id;
+        this.permiso_id = permiso_id;
     
     }
     // Getters y setters
-    public int getId() {
-        return id;
+  
+    public int getRol_id() {
+        return rol_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setRol_id(int rol_id) {
+        this.rol_id = rol_id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public int getPermiso_id() {
+        return permiso_id;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setPermiso_id(int permiso_id) {
+        this.permiso_id = permiso_id;
     }
+
+
     public boolean create() {
-        String sql = "INSERT INTO roles (nombre) VALUES ( ?)";
+        String sql = "INSERT INTO roles_permisos (rol_id,permiso_id) VALUES ( ?,?)";
         ConexionDB.getInstance();
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nombre);
+            ps.setInt(1, rol_id);
+            ps.setInt(2, permiso_id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -53,23 +57,12 @@ public class rolModel {
         }
     }
 
-    public boolean update() {
-        String sql = "UPDATE roles SET nombre = ? WHERE id = ?";
-        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, nombre);
-             ps.setInt(2, id);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error al ejecutar la actualización", e);
-        }
-    }
 
     public boolean delete() {
-        String sql = "DELETE FROM roles WHERE id = ?";
+        String sql = "DELETE FROM roles_permisos WHERE rol_id = ? and permiso_id= ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
+            ps.setInt(1, rol_id);
+            ps.setInt(2, permiso_id);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -78,39 +71,28 @@ public class rolModel {
         }
     }
 
-    public boolean exist(int id) {
-        String sql = "SELECT * FROM roles WHERE id = ?";
-        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet resultado = ps.executeQuery()) {
-                return resultado.next(); // Devuelve true si hay un registro, false si no
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+  
 
     public String getAll(LinkedList<String> params) {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "<h1>Lista de roles</h1>"
+        tabla = "<h1>Lista de Roles Permisos </h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"
                 + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ID</th>\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">ROL ID</th>\n"
                 + "\n"
-                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">NOMBRE</th>\n"
+                + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">PERMISO ID</th>\n"
                + "\n";
 
         try {
             String query;
             if (params.size() == 0)
-                query = "SELECT id, nombre FROM roles";
+                query = "SELECT id, nombre FROM roles_permisos";
             else
-                query = "SELECT id, nombre FROM roles WHERE " + params.get(0) + " LIKE '%" + params.get(1)
+                query = "SELECT id, nombre FROM roles_permisos WHERE " + params.get(0) + " LIKE '%" + params.get(1)
                         + "%'";
 
             Connection con = ConexionDB.getInstance().connect();
@@ -142,7 +124,6 @@ public class rolModel {
         }
         return tabla;
     }
-
 
 
    

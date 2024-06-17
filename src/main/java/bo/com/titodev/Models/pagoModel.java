@@ -1,6 +1,7 @@
  package bo.com.titodev.Models;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,19 +11,19 @@ import bo.com.titodev.Services.ConexionDB;
 public class pagoModel {
     private int id;
     private double monto;
-    private java.sql.Date fecha;
+    private  Date fecha;
     private String concepto;
-    private int inscripcionId;
+    private int estudianteMateria;
 
     public pagoModel() {
     }
 
-    public pagoModel(int id, double monto, java.sql.Date fecha, String concepto, int inscripcionId) {
+    public pagoModel(int id, double monto,  Date fecha, String concepto, int estudianteMateria) {
         this.id = id;
         this.monto = monto;
         this.fecha = fecha;
         this.concepto = concepto;
-        this.inscripcionId = inscripcionId;
+        this.estudianteMateria = estudianteMateria;
     }
 
     // Getters y setters
@@ -58,22 +59,22 @@ public class pagoModel {
         this.concepto = concepto;
     }
 
-    public int getInscripcionId() {
-        return inscripcionId;
+    public int getestudianteMateria() {
+        return estudianteMateria;
     }
 
-    public void setInscripcionId(int inscripcionId) {
-        this.inscripcionId = inscripcionId;
+    public void setestudianteMateria(int estudianteMateria) {
+        this.estudianteMateria = estudianteMateria;
     }
 
     // Métodos CRUD
     public boolean create() {
-        String sql = "INSERT INTO pagos (monto, fecha, concepto, inscripcion_id) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO pagos (monto, fecha, concepto, estudiante_materia_id) VALUES (?, ?, ?, ?)";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setDouble(1, monto);
             ps.setDate(2, fecha);
             ps.setString(3, concepto);
-            ps.setInt(4, inscripcionId);
+            ps.setInt(4, estudianteMateria);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {
@@ -81,7 +82,21 @@ public class pagoModel {
             throw new RuntimeException("Error al ejecutar la inserción", e);
         }
     }
-
+    public boolean update() {
+        String sql = "UPDATE pagos SET monto = ?, fecha = ?, concepto = ?, estudiante_materia_id = ? WHERE id = ?";
+        try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setDouble(1, monto);
+            ps.setDate(2, fecha);
+            ps.setString(3, concepto);
+            ps.setInt(4, estudianteMateria);
+            ps.setInt(5, id);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al ejecutar la actualización", e);
+        }
+    }
     public boolean delete() {
         String sql = "DELETE FROM pagos WHERE id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -105,7 +120,7 @@ public class pagoModel {
             + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">Monto</th>\n"
             + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">Fecha</th>\n"
             + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">Concepto</th>\n"
-            + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">Inscripcion ID</th>\n"
+            + "    <th style = \"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">EstudianteMateria </th>\n"
             + "  </tr>\n";
 
     try {
@@ -127,7 +142,7 @@ public class pagoModel {
                     + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getDouble("monto") + "</td>\n"
                     + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getDate("fecha") + "</td>\n"
                     + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("concepto") + "</td>\n"
-                    + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getInt("inscripcion_id") + "</td>\n"
+                    + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getInt("estudiante_materia_id") + "</td>\n"
                     + "  </tr>\n";
         }
         tabla += "</table>";
