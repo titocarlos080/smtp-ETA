@@ -34,7 +34,7 @@ public class pagoController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        eModel = new pagoModel(0,Double.parseDouble(params.get(0)),Date.valueOf(params.get(1)),params.get(2),Integer.valueOf(params.get(3)));
+        eModel = new pagoModel(Integer.parseInt(params.get(0)),Double.parseDouble(params.get(1)),Date.valueOf(params.get(2)),params.get(3),Integer.valueOf(params.get(4)));
 
         if (eModel.update()) {
             respuesta = "Actualizado exitosamente.";

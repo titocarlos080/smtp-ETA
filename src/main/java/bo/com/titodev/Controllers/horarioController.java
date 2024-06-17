@@ -34,7 +34,7 @@ public class horarioController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        hModel = new horarioModel(Integer.parseInt(params.get(0)),Time.valueOf(params.get(1)),Time.valueOf(params.get(2)));
+        hModel = new horarioModel( Integer.parseInt(params.get(0)),Time.valueOf(params.get(1)),Time.valueOf(params.get(2)));
 
         if (hModel.update()) {
             respuesta = "Actualizado exitosamente.";

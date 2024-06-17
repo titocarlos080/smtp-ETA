@@ -132,7 +132,6 @@ public class subjectValidator {
             return;
         }
 
-        System.out.println("COMANDO DE SELECCION TABLAS " + opcion);
         if (opcion.toLowerCase().equals("roles")) {
             if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
@@ -155,6 +154,38 @@ public class subjectValidator {
                     break;
                 case "delete":
                     response = rol.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+       
+        if (opcion.toLowerCase().equals("permisos")) {
+            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
+                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
+                return;
+            }
+            permisoController permiso = new permisoController();
+            LinkedList<String> paramsList = permiso.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = permiso.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = permiso.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = permiso.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = permiso.delete(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 default:
@@ -261,6 +292,39 @@ public class subjectValidator {
             }
             return;
         }
+    
+        if (opcion.toLowerCase().equals("dias")) {
+
+            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
+                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
+                return;
+            }
+            diaController dias = new diaController();
+            LinkedList<String> paramsList = dias.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = dias.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = dias.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = dias.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = dias.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "<html><body style='background-color:red;'>No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.</body></html>");
+                    break;
+            }
+            return;
+        }
 
         if (opcion.toLowerCase().equals("materias")) {
 
@@ -294,7 +358,72 @@ public class subjectValidator {
             }
             return;
         }
+      
+        if (opcion.toLowerCase().equals("grupos_materias")) {
 
+            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
+                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
+                return;
+            }
+            grupoMateriaController grupoMateria = new grupoMateriaController();
+            LinkedList<String> paramsList = grupoMateria.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = grupoMateria.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = grupoMateria.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = grupoMateria.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = grupoMateria.delete(paramsList.get(0));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+      
+        if (opcion.toLowerCase().equals("gupo_materia_horarios")) {
+
+            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
+                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
+                return;
+            }
+            grupoMateriaHorarioController grupoMateriaHorario = new grupoMateriaHorarioController();
+            LinkedList<String> paramsList = grupoMateriaHorario.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = grupoMateriaHorario.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = grupoMateriaHorario.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = grupoMateriaHorario.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = grupoMateriaHorario.delete(paramsList.get(0),Integer.parseInt(paramsList.get(1)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
 
         if (opcion.toLowerCase().equals("horarios")) {
 
@@ -329,8 +458,38 @@ public class subjectValidator {
             return;
         }
 
+        if (opcion.toLowerCase().equals("estudiante_materias")) {
 
-
+            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
+                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
+                return;
+            }
+            materiaController materias = new materiaController();
+            LinkedList<String> paramsList = materias.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = materias.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = materias.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = materias.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = materias.delete(paramsList.get(0));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
 
         smtp.sendEmail(emailEmisor, "Comando incorrecto, Verifique que este enviando bien los comandos");
     }

@@ -1,17 +1,17 @@
 package bo.com.titodev.Controllers;
 
-import bo.com.titodev.Models.gestionModel;
+import bo.com.titodev.Models.estudianteMateria;
 import bo.com.titodev.Utils.validatorUtils;
 import java.util.LinkedList;
 import java.sql.Date;
+ 
+public class estudianteMateriaController {
 
-public class gestionController {
-
-    private gestionModel gModel;
+    private estudianteMateria emModel;
     private String respuesta;
 
-    public gestionController() {
-        this.gModel = new gestionModel();
+    public estudianteMateriaController() {
+        this.emModel = new estudianteMateria();
     }
 
     public String create(LinkedList<String> params) {
@@ -19,8 +19,8 @@ public class gestionController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        gModel = new gestionModel(0, params.get(0), Date.valueOf(params.get(1)), Date.valueOf(params.get(2)));
-        if (gModel.create()) {
+        emModel = new estudianteMateria(0, Date.valueOf( params.get(0)), params.get(1),  params.get(2));
+        if (emModel.create()) {
             respuesta = "Creado exitosamente.";
         } else {
             respuesta = "No se pudo crear.";
@@ -33,8 +33,8 @@ public class gestionController {
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        gModel = new gestionModel(Integer.parseInt( params.get(0)), params.get(1), Date.valueOf(params.get(2)), Date.valueOf(params.get(3)));
-        if (gModel.update()) {
+        emModel = new estudianteMateria(Integer.parseInt(params.get(0)), Date.valueOf( params.get(1)), params.get(2),  params.get(3));
+        if (emModel.update()) {
             respuesta = "Actualizado exitosamente.";
         } else {
             respuesta = "No se pudo actualizar.";
@@ -46,8 +46,8 @@ public class gestionController {
         if (!validatorUtils.validateNumber(String.valueOf(id))) {
             return "El id debe ser un numero";
         }
-        gModel.setCodigo(id);
-        if (gModel.delete()) {
+        emModel.setId(id);
+        if (emModel.delete()) {
             respuesta = "Eliminado exitosamente.";
         } else {
             respuesta = "No se pudo eliminar.";
@@ -56,11 +56,11 @@ public class gestionController {
     }
 
     public String getAll(LinkedList<String> params) {
-        return gModel.getAll(params);
+        return emModel.getAll(params);
     }
 
     public boolean exist(int id) {
-        return gModel.exist(id);
+        return emModel.exist(id);
     }
 
     public LinkedList<String> createList(String[] params) {
@@ -73,7 +73,7 @@ public class gestionController {
     }
 
     private void validateCreate(LinkedList<String> params) {
-
+           
     }
 
     private void validateUpdate(LinkedList<String> params) {
