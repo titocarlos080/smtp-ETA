@@ -2,7 +2,7 @@ package bo.com.titodev.Utils;
 
 import java.util.LinkedList;
 
-import bo.com.titodev.Controllers.*;
+import bo.com.titodev.Negocio.*;
 import bo.com.titodev.Services.smtpService;
 
 public class subjectValidator {
