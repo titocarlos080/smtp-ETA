@@ -10,18 +10,18 @@ public class subjectValidator {
     private String subject;
     private String emailEmisor;
     private smtpService smtp;
-    private usuarioController userValidate;
+    private usuarioNegocio userValidate;
 
     public subjectValidator(String subject, String emailEmisor) {
         this.subject = subject;
         this.emailEmisor = emailEmisor;
-        this.userValidate = new usuarioController();
+        this.userValidate = new usuarioNegocio();
         smtp = new smtpService();
 
     }
 
     public void ValidateSuject() {
-        usuarioController usuario = new usuarioController();
+        usuarioNegocio usuario = new usuarioNegocio();
         if (!usuario.auth(emailEmisor)) {
             smtp.sendEmail(emailEmisor, "No tienes permisos para realizar esta acción.");
             return;
@@ -105,7 +105,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            usuarioController usuario = new usuarioController();
+            usuarioNegocio usuario = new usuarioNegocio();
             LinkedList<String> paramsList = usuario.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -137,7 +137,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            rolController rol = new rolController();
+            rolNegocio rol = new rolNegocio();
             LinkedList<String> paramsList = rol.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -169,7 +169,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            permisoController permiso = new permisoController();
+            permisoNegocio permiso = new permisoNegocio();
             LinkedList<String> paramsList = permiso.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -201,7 +201,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            gestionController gestion = new gestionController();
+            gestionNegocio gestion = new gestionNegocio();
             LinkedList<String> paramsList = gestion.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -233,7 +233,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            carreraController carrera = new carreraController();
+            carreraNegocio carrera = new carreraNegocio();
             LinkedList<String> paramsList = carrera.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -266,7 +266,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            nivelController niveles = new nivelController();
+            nivelNegocio niveles = new nivelNegocio();
             LinkedList<String> paramsList = niveles.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -299,7 +299,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            diaController dias = new diaController();
+            diaNegocio dias = new diaNegocio();
             LinkedList<String> paramsList = dias.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -332,7 +332,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            materiaController materias = new materiaController();
+            materiaNegocio materias = new materiaNegocio();
             LinkedList<String> paramsList = materias.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -365,7 +365,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            grupoMateriaController grupoMateria = new grupoMateriaController();
+            grupoMateriaNegocio grupoMateria = new grupoMateriaNegocio();
             LinkedList<String> paramsList = grupoMateria.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -398,7 +398,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            grupoMateriaHorarioController grupoMateriaHorario = new grupoMateriaHorarioController();
+            grupoMateriaHorarioNegocio grupoMateriaHorario = new grupoMateriaHorarioNegocio();
             LinkedList<String> paramsList = grupoMateriaHorario.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -431,7 +431,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            materiaController materias = new materiaController();
+            materiaNegocio materias = new materiaNegocio();
             LinkedList<String> paramsList = materias.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -464,7 +464,7 @@ public class subjectValidator {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
             }
-            materiaController materias = new materiaController();
+            materiaNegocio materias = new materiaNegocio();
             LinkedList<String> paramsList = materias.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
@@ -508,7 +508,7 @@ public class subjectValidator {
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar rol</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-ROLES [NOMBRE]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-ROLES [ID,NOMBRE]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar rol</td> \n \n"
@@ -534,6 +534,58 @@ public class subjectValidator {
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar usuarios</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-USUARIOS [] || LIST-USUARIO [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar carreras</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-CARRERAS [COD,DESCRIPCION,COD_GESTION]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar carreras</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-CARRERAS [COD, DESCRIPCION,COD_GESTION]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar carreras</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-CARRERAS [COD]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar carreras</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-CARRERAS [] || LIST-CARRERAS [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar  materias </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-MATERIAS [SIGLA,DESCRIPCION,OBSERVACION,CREDITOS]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar  materias </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-MATERIAS [SIGLA,DESCRIPCION,OBSERVACION,CREDITOS]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar  materias </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-MATERIAS [SIGLA]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar materias </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-MATERIAS [] || LIST-MATERIAS [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar  niveles </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-NIVELES [NOMBRE]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar  niveles </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-NIVELES [ID,NOMBRE]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar  niveles </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-NIVELES [ID]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar niveles </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-NIVELES [] || LIST-NIVELES [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
 
                 + "</table>";
