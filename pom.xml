@@ -13,6 +13,11 @@
                     <source>17</source>
                     <target>17</target>
                     <release>17</release>
+                    <archive>
+                        <manifest>
+                            <mainClass>bo.com.titodev.SistemaEtaHansRoth.SistemaETAHANSROTH</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>
