@@ -11,7 +11,7 @@ import bo.com.titodev.Services.ConexionDB;
 
 public class estudiantemateriaDato {
     private int id;
-    private Date fecha;
+    private Date fecha; 
     private String grupoMateriaSigla;
     private String estudiante_ci;
 

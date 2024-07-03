@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 import bo.com.titodev.Services.ConexionDB;
 
-public class estudianteDato {
+public class administrativoDato {
     private String ci;
     private String nombre;
     private String apellido_pat;
@@ -21,10 +21,10 @@ public class estudianteDato {
     private int usuario_id;
     private String email;
 
-    public estudianteDato() {
+    public administrativoDato() {
     }
 
-    public estudianteDato(String ci, String nombre, String apellido_pat, String apellido_mat, String telefono,
+    public administrativoDato(String ci, String nombre, String apellido_pat, String apellido_mat, String telefono,
             char sexo, Date fecha_nacimiento, int usuario_id, String email) {
         this.ci = ci;
         this.nombre = nombre;
@@ -112,7 +112,7 @@ public class estudianteDato {
 
     // Métodos CRUD
     public boolean create() {
-    String sql = "{call insertar_estudiante(?, ?, ?, ?, ?, ?, ?, ?)}"; // Definir la llamada a la función almacenada
+    String sql = "{call insertar_administrativo(?, ?, ?, ?, ?, ?, ?, ?)}"; // Definir la llamada a la función almacenada
     try (Connection con = ConexionDB.getInstance().connect(); 
          CallableStatement cs = con.prepareCall(sql)) {
         
@@ -139,7 +139,7 @@ public class estudianteDato {
 
 
     public boolean update() {
-        String sql = "UPDATE estudiantes SET nombre = ?, apellido_pat = ?, apellido_mat = ?, telefono = ?, sexo = ?, fecha_nacimiento = ?, usuario_id = ?, email = ? WHERE ci = ?";
+        String sql = "UPDATE administrativos SET nombre = ?, apellido_pat = ?, apellido_mat = ?, telefono = ?, sexo = ?, fecha_nacimiento = ?, usuario_id = ?, email = ? WHERE ci = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, nombre);
             ps.setString(2, apellido_pat);
@@ -159,7 +159,7 @@ public class estudianteDato {
     }
 
     public boolean delete() {
-        String sql = "DELETE FROM estudiantes WHERE ci = ?";
+        String sql = "DELETE FROM administrativos WHERE ci = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, ci);
             int rowsAffected = ps.executeUpdate();
@@ -171,7 +171,7 @@ public class estudianteDato {
     }
 
     public boolean exist(String ci) {
-        String sql = "SELECT * FROM estudiantes WHERE ci = ?";
+        String sql = "SELECT * FROM administrativos WHERE ci = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, ci);
             try (ResultSet resultado = ps.executeQuery()) {
@@ -187,7 +187,7 @@ public String getAll(LinkedList<String> params) {
     String tabla = "";
     PreparedStatement ps = null;
     ResultSet resultado = null;
-    tabla = "<h1>Lista de Estudiantes</h1>"
+    tabla = "<h1>Lista de administrativos</h1>"
             + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
             + "  <tr>\n"
             + "    <th style=\"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CI</th>\n"
@@ -204,9 +204,9 @@ public String getAll(LinkedList<String> params) {
     try {
         String query;
         if (params.size() == 0) {
-            query = "SELECT * FROM estudiantes";
+            query = "SELECT * FROM administrativos";
         } else {
-            query = "SELECT * FROM estudiantes WHERE " + params.get(0) + " LIKE ?";
+            query = "SELECT * FROM administrativos WHERE " + params.get(0) + " LIKE ?";
         }
 
         Connection con = ConexionDB.getInstance().connect();
@@ -235,14 +235,14 @@ public String getAll(LinkedList<String> params) {
         return tabla;
     } catch (Exception e) {
         e.printStackTrace();
-        return "No se pudieron listar los estudiantes";
+        return "No se pudieron listar los administrativos";
     }
 }
 
     public String getById(String ci) {
         PreparedStatement ps = null;
         ResultSet resultado = null;
-        String tabla = "<h1>Detalles del Estudiante</h1>";
+        String tabla = "<h1>Detalles del administrativos</h1>";
         tabla += "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "  <tr>\n"
                 + "    <th style=\"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">CI</th>\n"
@@ -257,7 +257,7 @@ public String getAll(LinkedList<String> params) {
                 + "  </tr>\n";
     
         try {
-            String query = "SELECT * FROM estudiantes WHERE ci = ?";
+            String query = "SELECT * FROM administrativos WHERE ci = ?";
             Connection con = ConexionDB.getInstance().connect();
             ps = con.prepareStatement(query);
             ps.setString(1, ci);

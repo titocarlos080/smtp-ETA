@@ -3,7 +3,7 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.SQLException; 
 import java.util.LinkedList;
 import bo.com.titodev.Services.ConexionDB;
 
@@ -68,7 +68,7 @@ public class grupoMateriaDato {
 
     // Métodos CRUD
     public boolean create() {
-        String sql = "INSERT INTO grupo_materias (sigla, descripcion, materia_sigla, carrera_sigla, docente_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO grupos_materias (sigla, descripcion, materia_sigla, carrera_sigla, docente_id) VALUES (?, ?, ?, ?, ?)";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, sigla);
             ps.setString(2, descripcion);
@@ -84,7 +84,7 @@ public class grupoMateriaDato {
     }
 
     public boolean update() {
-        String sql = "UPDATE grupo_materias SET descripcion = ?, materia_sigla = ?, carrera_sigla = ?, docente_id = ? WHERE sigla = ?";
+        String sql = "UPDATE grupos_materias SET descripcion = ?, materia_sigla = ?, carrera_sigla = ?, docente_id = ? WHERE sigla = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, descripcion);
             ps.setString(2, materia_sigla);
@@ -100,7 +100,7 @@ public class grupoMateriaDato {
     }
 
     public boolean delete() {
-        String sql = "DELETE FROM grupo_materias WHERE sigla = ?";
+        String sql = "DELETE FROM grupos_materias WHERE sigla = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, sigla);
             int rowsAffected = ps.executeUpdate();
@@ -112,7 +112,7 @@ public class grupoMateriaDato {
     }
 
     public boolean exist(String sigla) {
-        String sql = "SELECT * FROM grupo_materias WHERE sigla = ?";
+        String sql = "SELECT * FROM grupos_materias WHERE sigla = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, sigla);
             try (ResultSet resultado = ps.executeQuery()) {
@@ -128,7 +128,7 @@ public class grupoMateriaDato {
         String tabla = "";
         PreparedStatement ps = null;
         ResultSet resultado = null;
-        tabla = "<h1>Lista de grupo_materias</h1>"
+        tabla = "<h1>Lista de grupos_materias</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "  <tr>\n"
                 + "    <th style=\"text-align: left; padding: 8px; background-color: #3c4f76; color: white; border: 1px solid black;\">SIGLA</th>\n"
@@ -141,11 +141,11 @@ public class grupoMateriaDato {
         try {
             String query;
             if (params.size() == 0) {
-                query = "SELECT * FROM grupo_materias";
+                query = "SELECT * FROM grupos_materias";
                 Connection con = ConexionDB.getInstance().connect();
                 ps = con.prepareStatement(query);
             } else {
-                query = "SELECT * FROM grupo_materias WHERE " + params.get(0) + " LIKE ?";
+                query = "SELECT * FROM grupos_materias WHERE " + params.get(0) + " LIKE ?";
                 Connection con = ConexionDB.getInstance().connect();
                 ps = con.prepareStatement(query);
                 ps.setString(1, "%" + params.get(1) + "%");

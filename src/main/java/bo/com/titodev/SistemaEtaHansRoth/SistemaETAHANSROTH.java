@@ -4,8 +4,8 @@ import bo.com.titodev.Services.popService;
 
 public class SistemaETAHANSROTH {
     public static void main(String[] args) {
-        popService popService = new popService();
 
+        popService popService = new popService();
         int newCantMails = popService.getCantidadEmails();
         while (true) {
             System.out.println("Escuchando EMAILS...");

@@ -1,9 +1,28 @@
-    CREATE TABLE roles (
+
+CREATE TABLE menus (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL UNIQUE,
+    ruta VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE roles (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL UNIQUE
 );
 
+CREATE TABLE roles_menus (
+    id SERIAL PRIMARY KEY,
+    rol_id INT NOT NULL,
+    menu_id INT NOT NULL,
+    FOREIGN KEY(rol_id) REFERENCES roles(id),
+    FOREIGN KEY(menu_id) REFERENCES menus(id)
+);
 
+
+CREATE TABLE tematicas (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL UNIQUE
+);
 
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
@@ -11,44 +30,147 @@ CREATE TABLE usuarios (
     password VARCHAR(255) NOT NULL,
     password_reset VARCHAR(255) NULL,
     rol_id INT NOT NULL,
-    FOREIGN KEY(rol_id) REFERENCES roles(id)
+    tematica_id INT NOT NULL,
+    FOREIGN KEY(rol_id) REFERENCES roles(id),
+    FOREIGN KEY(tematica_id) REFERENCES tematicas(id)
  );
 
 
-
-CREATE TABLE personas (
+CREATE TABLE estudiantes (
     ci VARCHAR(20) NOT NULL PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    apellido_pat VARCHAR(255) NOT NULL,
-    apellido_mat VARCHAR(255) NOT NULL,
+    nombre VARCHAR(255)   NULL,
+    apellido_pat VARCHAR(255)   NULL,
+    apellido_mat VARCHAR(255)   NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     telefono VARCHAR(255) NULL,
     sexo CHAR(1) CHECK (sexo IN ('M', 'F')),
     fecha_nacimiento DATE NOT NULL,
     usuario_id INT NOT NULL,
     FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
     
-
  );
-CREATE TABLE estudiantes (
-    id SERIAL PRIMARY KEY,
-    personas_ci VARCHAR(20) NOT NULL,
-    FOREIGN KEY(personas_ci) REFERENCES personas(ci)
 
-  
- );
+
+
 CREATE TABLE administrativos (
-    id SERIAL PRIMARY KEY,
-    personas_ci VARCHAR(20) NOT NULL,
-    FOREIGN KEY(personas_ci) REFERENCES personas(ci) 
+    ci VARCHAR(20) NOT NULL PRIMARY KEY,
+    nombre VARCHAR(255)   NULL,
+    apellido_pat VARCHAR(255)   NULL,
+    apellido_mat VARCHAR(255)   NULL,
+    telefono VARCHAR(255) NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    sexo CHAR(1) CHECK (sexo IN ('M', 'F')),
+    fecha_nacimiento DATE NOT NULL,
+    usuario_id INT NOT NULL,
+    FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
+  
 );
 
 CREATE TABLE docentes (
-    id SERIAL PRIMARY KEY,
-    personas_ci VARCHAR(20) NOT NULL,
-    FOREIGN KEY(personas_ci) REFERENCES personas(ci)
+    ci VARCHAR(20) NOT NULL PRIMARY KEY,
+    nombre VARCHAR(255)   NULL,
+    apellido_pat VARCHAR(255)   NULL,
+    apellido_mat VARCHAR(255)   NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    kardex VARCHAR(255) NULL,
+    currilculum VARCHAR(255) NULL,
+     usuario_id INT NOT NULL, -- Agregado usuario_id
+     FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
 );
+-- ///////////////////////////////////////////////////////////
+ CREATE OR REPLACE FUNCTION insertar_usuario(
+    p_email VARCHAR,
+    p_password VARCHAR,
+    p_rol_id INT,
+    p_tematica_id INT
+)
+RETURNS INT AS $$
+DECLARE
+    v_usuario_id INT;
+BEGIN
+    -- Insertar un nuevo usuario en la tabla usuarios
+    INSERT INTO usuarios (email, password, rol_id, tematica_id)
+    VALUES (p_email, p_password, p_rol_id, p_tematica_id)
+    RETURNING id INTO v_usuario_id;
 
+    RETURN v_usuario_id;
+END;
+$$ LANGUAGE plpgsql;
+-- ///////////////////////////////////////////////////////////
 
+ CREATE OR REPLACE PROCEDURE insertar_estudiante(
+    p_ci VARCHAR,
+    p_nombre VARCHAR,
+    p_apellido_pat VARCHAR,
+    p_apellido_mat VARCHAR,
+    p_email VARCHAR,
+    p_telefono VARCHAR,
+    p_sexo CHAR,
+    p_fecha_nacimiento DATE
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_usuario_id INT;
+BEGIN
+    -- Insertar un nuevo usuario y obtener su ID
+    v_usuario_id := insertar_usuario(p_email, p_ci, 3, 1);  -- Ajustar rol_id y tematica_id según sea necesario
+
+    -- Insertar un nuevo estudiante en la tabla estudiantes
+    INSERT INTO estudiantes (ci, nombre, apellido_pat, apellido_mat, email, telefono, sexo, fecha_nacimiento, usuario_id)
+    VALUES (p_ci, p_nombre, p_apellido_pat, p_apellido_mat, p_email, p_telefono, p_sexo, p_fecha_nacimiento, v_usuario_id);
+END;
+$$;
+-- ///////////////////////////////////////////////////////////
+CREATE OR REPLACE PROCEDURE insertar_docente(
+    p_ci VARCHAR,
+    p_nombre VARCHAR,
+    p_apellido_pat VARCHAR,
+    p_apellido_mat VARCHAR,
+    p_email VARCHAR,
+    p_kardex VARCHAR,
+    p_curriculum VARCHAR
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_usuario_id INT;
+BEGIN
+    -- Insertar un nuevo usuario y obtener su ID
+    v_usuario_id := insertar_usuario(p_email, p_ci, 2, 1);  -- Ajustar rol_id y tematica_id según sea necesario
+
+    -- Insertar un nuevo docente en la tabla docentes
+    INSERT INTO docentes (ci, nombre, apellido_pat, apellido_mat, email, kardex, curriculum, usuario_id)
+    VALUES (p_ci, p_nombre, p_apellido_pat, p_apellido_mat, p_email, p_kardex, p_curriculum, v_usuario_id);
+END;
+$$;
+-- ///////////////////////////////////////////////////////////
+
+CREATE OR REPLACE PROCEDURE insertar_administrativo(
+    p_ci VARCHAR,
+    p_nombre VARCHAR,
+    p_apellido_pat VARCHAR,
+    p_apellido_mat VARCHAR,
+    p_email VARCHAR,
+    p_telefono VARCHAR,
+    p_sexo CHAR,
+    p_fecha_nacimiento DATE
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_usuario_id INT;
+BEGIN
+    -- Insertar un nuevo usuario y obtener su ID
+    v_usuario_id := insertar_usuario(p_email, p_ci, 1, 1);  -- Ajustar rol_id y tematica_id según sea necesario
+
+    -- Insertar un nuevo administrativo en la tabla administrativos
+    INSERT INTO administrativos (ci, nombre, apellido_pat, apellido_mat, telefono, email, sexo, fecha_nacimiento, usuario_id)
+    VALUES (p_ci, p_nombre, p_apellido_pat, p_apellido_mat, p_telefono, p_email, p_sexo, p_fecha_nacimiento, v_usuario_id);
+END;
+$$;
+
+-- ///////////### TRIGGER  ###/////////////////////
 
 CREATE TABLE gestiones (
     codigo SERIAL PRIMARY KEY,
@@ -88,14 +210,24 @@ CREATE TABLE carreras_materias (
     FOREIGN KEY(carrera_sigla) REFERENCES carreras(sigla)
 );
 
+CREATE TABLE estudiantes_carrera (
+    id SERIAL PRIMARY KEY,
+    fecha_inscripcion DATE NOT NULL,
+    estudiante_ci VARCHAR(20)  NOT NULL,
+    carrera_sigla VARCHAR(255)  NOT NULL,
+     FOREIGN KEY(estudiante_ci) REFERENCES estudiantes(ci),
+     FOREIGN KEY(carrera_sigla) REFERENCES carreras(sigla)
+);
+
+
 -- ////////////////////////////////////////////////////////////////////////////
-CREATE TABLE grupos (
+CREATE TABLE grupos_materias (
     sigla VARCHAR(10) NOT NULL PRIMARY KEY,
     descripcion VARCHAR(255) NOT NULL,
     materia_sigla VARCHAR(255)  NOT NULL,
     carrera_sigla VARCHAR(255)  NOT NULL,
-    docente_id  INT NOT NULL,
-     FOREIGN KEY(docente_id) REFERENCES docentes(id),
+    docente_ci  VARCHAR(20) NOT NULL,
+     FOREIGN KEY(docente_ci) REFERENCES docentes(ci),
      FOREIGN KEY(materia_sigla) REFERENCES materias(sigla),
     FOREIGN KEY(carrera_sigla) REFERENCES carreras(sigla)
  
@@ -111,43 +243,42 @@ CREATE TABLE dias (
     nombre VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE grupos_horarios (
+CREATE TABLE gupo_materia_horarios (
     grupo_sigla VARCHAR(10) NOT NULL,
     horario_id INT NOT NULL,
     dia_id INT NOT NULL,
     PRIMARY KEY(grupo_sigla,horario_id),
     FOREIGN KEY(dia_id)  REFERENCES dias(id),
-     FOREIGN KEY(grupo_sigla) REFERENCES grupos(sigla),
+     FOREIGN KEY(grupo_sigla) REFERENCES grupos_materias(sigla),
      FOREIGN KEY(horario_id) REFERENCES horarios(id)
  );
 
+CREATE TABLE estudiante_materia (
+    id SERIAL PRIMARY KEY  NOT NULL,
+    fecha DATE NOT NULL,
+    grupos_materias_sigla VARCHAR(10) NOT NULL,
+    estudiante_ci VARCHAR(20) NOT NULL,
+     FOREIGN KEY(grupos_materias_sigla)  REFERENCES grupos_materias(sigla),
+     FOREIGN KEY(estudiante_ci) REFERENCES estudiantes(ci)
+  );
+
+
 CREATE TABLE notas (
     id SERIAL PRIMARY KEY,
-    estudiante_id INT NOT NULL,
-    docente_id INT NOT NULL,
-    grupo_sigla VARCHAR(10) NOT NULL,
-    nota_final DECIMAL(5,2),
-    FOREIGN KEY(docente_id) REFERENCES docentes(id),
-    FOREIGN KEY(estudiante_id) REFERENCES estudiantes(id),
-    FOREIGN KEY(grupo_sigla) REFERENCES grupos(sigla)
-);
-
-CREATE TABLE inscripciones (
-    id SERIAL PRIMARY KEY,
-    estudiante_id INT NOT NULL, 
-    grupo_sigla VARCHAR(10) NOT NULL,
-    fecha DATE NOT NULL,
-    FOREIGN KEY(estudiante_id) REFERENCES estudiantes(id),
-    FOREIGN KEY(grupo_sigla) REFERENCES grupos(sigla)
+    nota_final NUMERIC(5, 2) NOT NULL CHECK (nota_final >= 1 AND nota_final <= 100),
+    estudiante_materia_id INT NOT NULL, 
+     FOREIGN KEY(estudiante_materia_id) REFERENCES estudiante_materia(id)
  );
+
+ 
 
 CREATE TABLE pagos (
     id SERIAL PRIMARY KEY,
     monto DECIMAL(10,2) NOT NULL,
     fecha DATE NOT NULL,
     concepto VARCHAR(255) NOT NULL,
-    inscripcion_id INT NOT NULL, 
-    FOREIGN KEY(inscripcion_id) REFERENCES inscripciones(id)
+    estudiante_materia_id INT NOT NULL, 
+     FOREIGN KEY(estudiante_materia_id) REFERENCES estudiante_materia(id)
  
  );
  CREATE TABLE egresos (
