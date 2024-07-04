@@ -166,7 +166,7 @@ public class usuariosDato {
         String tabla = "";
         Statement consulta;
         ResultSet resultado = null;
-        tabla = "<h1>Lista de usuarioss</h1>"
+        tabla = "<h1>Lista de usuarios</h1>"
                 + "<table style=\"border-collapse: collapse; width: 100%; border: 1px solid black;\">\n"
                 + "\n"
                 + "  <tr>\n"

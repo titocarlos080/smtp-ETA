@@ -6,10 +6,11 @@ import java.sql.SQLException;
 
 public class ConexionDB {
 
-    private final String DB ="instituto"; // "db_grupo05sc";//
-    private final String USER ="tito";//// "grupo05sc";//
-    private final String PASSWORD ="123";// "grup005grup005";//
-    private final String URL ="jdbc:postgresql://localhost:5432/" + DB;//// "jdbc:postgresql://mail.tecnoweb.org.bo:5432/" + DB;//
+    private final String DB = "db_grupo05sc";// "instituto"; //
+    private final String USER = "grupo05sc";// "tito";////
+    private final String PASSWORD = "grup005grup005";// "123";//
+    private final String URL = "jdbc:postgresql://mail.tecnoweb.org.bo:5432/" + DB;// "jdbc:postgresql://localhost:5432/"
+                                                                                   // + DB;////
     private Connection conn;
     private static ConexionDB instance;
 

@@ -6,32 +6,44 @@ import javax.mail.internet.*;
 
 public class smtpService {
 
-    private final static String PORT_SMTP = "587";
-    private final static String HOST = "smtp.gmail.com";
-    private final static String USER = "titodev83@gmail.com";
-    private final static String MAIL_PASSWORD = "wfjd nwcs glcz gkkw";// "wfjd nwcs glcz gkkw";
+    private final static String PORT_SMTP = "25";
+    private final static String PROTOCOL = "smtp";
+    private final static String HOST = "mail.tecnoweb.org.bo";
+    private final static String USER = "grupo05sc";
+    private final static String EMAIL = "grupo05sc@mail.tecnoweb.org.bo";
+    //private final static String MAIL_PASSWORD = "grup005grup005";
+    // private final static String MAIL_PASSWORD = "wfjd nwcs glcz gkkw";// "wfjd
+    // nwcs glcz gkkw";
+    // private final static String PORT_SMTP = "587";
+    // private final static String HOST = "smtp.gmail.com";
+    // private final static String USER = "titodev83@gmail.com";
+    // private final static String MAIL_PASSWORD = "wfjd nwcs glcz gkkw";// "wfjd
+    // nwcs glcz gkkw";
 
     public smtpService() {
     }
 
     public void sendEmail(String receptor, String mensaje) {
-        Properties properties = new Properties();
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true"); // Use STARTTLS for encryption
-        properties.put("mail.smtp.host", HOST);
-        properties.put("mail.smtp.port", PORT_SMTP); // Standard port for STARTTLS
-        properties.put("mail.smtp.ssl.trust", HOST); // Trust the SMTP host
+    //     Properties properties = new Properties();
+    //     properties.put("mail.smtp.auth", "true");
+    //     properties.put("mail.smtp.starttls.enable", "true"); // Use STARTTLS for encryption
+    //     properties.put("mail.smtp.host", HOST);
+    //     properties.put("mail.smtp.port", PORT_SMTP); // Standard port for STARTTLS
+    //   //  properties.put("mail.smtp.ssl.trust", HOST); // Trust the SMTP host
+     
+      Properties properties = new Properties();
+      properties.put("mail.transport.protocol", PROTOCOL);
+      properties.setProperty("mail.smtp.host", HOST);
+      properties.setProperty("mail.smtp.port", PORT_SMTP);
 
-        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(USER, MAIL_PASSWORD);
-            }
-        });
+
+      Session session = Session.getInstance(properties);
+
 
         try {
             // Create an email message
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(USER)); // Set the sender email address
+            message.setFrom(new InternetAddress(EMAIL)); // Set the sender email address
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receptor)); // Set the recipient email
                                                                                               // address
             message.setSubject(" INSTITUTO-ETA "); // Set the subject of the email

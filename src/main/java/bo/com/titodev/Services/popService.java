@@ -1,21 +1,23 @@
 package bo.com.titodev.Services;
 
+
 import java.io.*;
 import java.net.*;
+import java.util.regex.*;
 
-import bo.com.titodev.Utils.*;
+import bo.com.titodev.Utils.subjectValidator;
+import bo.com.titodev.Utils.validatorUtils;
 
 public class popService {
 
     // Constantes para la configuración del servidor POP3
-    private final String SERVER = "gonzalotech.ciencia.bo";//"mail.tecnoweb.org.bo";//
-    private final String USUARIO ="tito.carlos"; //"grupo05sc";
-    private final String CONTRASEÑA ="tito";// "grup005grup005";
+    private final String SERVER = "mail.tecnoweb.org.bo";
+    private final String USUARIO = "grupo05sc";
+    private final String CONTRASEÑA = "grup005grup005";
     private final int PUERTO = 110;
 
     // Constructor de la clase
-    public popService() {
-    }
+    public popService() {}
 
     /**
      * Método para obtener la cantidad de correos electrónicos en el servidor.
@@ -31,12 +33,9 @@ public class popService {
                 DataOutputStream salida = new DataOutputStream(socket.getOutputStream())) {
             if (socket.isConnected()) {
                 // Enviar comandos para autenticarse y obtener la lista de correos
-                if (!executeCommand(salida, entrada, "USER " + USUARIO + "\r\n"))
-                    return 0;
-                if (!executeCommand(salida, entrada, "PASS " + CONTRASEÑA + "\r\n"))
-                    return 0;
-                if (!executeCommand(salida, entrada, "LIST\r\n"))
-                    return 0;
+                if (!executeCommand(salida, entrada, "USER " + USUARIO + "\r\n")) return 0;
+                if (!executeCommand(salida, entrada, "PASS " + CONTRASEÑA + "\r\n")) return 0;
+                if (!executeCommand(salida, entrada, "LIST\r\n")) return 0;
 
                 // Obtener el último correo de la lista
                 number = getLastMail(entrada);
@@ -50,7 +49,7 @@ public class popService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Hola este la cantidad de numeros "+number);
+        System.out.println("Hola este la cantidad de numeros " + number);
         return Integer.parseInt(number);
     }
 
@@ -68,12 +67,9 @@ public class popService {
                 DataOutputStream salida = new DataOutputStream(socket.getOutputStream())) {
             if (socket.isConnected()) {
                 // Enviar comandos para autenticarse y obtener la lista de correos
-                if (!executeCommand(salida, entrada, "USER " + USUARIO + "\r\n"))
-                    return;
-                if (!executeCommand(salida, entrada, "PASS " + CONTRASEÑA + "\r\n"))
-                    return;
-                if (!executeCommand(salida, entrada, "LIST\r\n"))
-                    return;
+                if (!executeCommand(salida, entrada, "USER " + USUARIO + "\r\n")) return;
+                if (!executeCommand(salida, entrada, "PASS " + CONTRASEÑA + "\r\n")) return;
+                if (!executeCommand(salida, entrada, "LIST\r\n")) return;
 
                 // Obtener el número del último correo
                 number = getLastMail(entrada);
@@ -115,8 +111,7 @@ public class popService {
         String line;
         String previousLine = "";
         while ((line = in.readLine()) != null) {
-            if (line.equals("."))
-                break;
+            if (line.equals(".")) break;
             previousLine = line;
         }
         if (!previousLine.isEmpty()) {
@@ -126,15 +121,12 @@ public class popService {
     }
 
     public String extractSubjectValue(String inputString) {
-        int startIndex = inputString.indexOf("Subject:") + "Subject:".length();
-        int endIndex = inputString.indexOf("To:");
-        if (endIndex == -1 || endIndex < startIndex) {
-            endIndex = inputString.indexOf("In-Reply-To:");
+        Pattern pattern = Pattern.compile("Subject: (.*?)(\\r?\\n|$)");
+        Matcher matcher = pattern.matcher(inputString);
+        if (matcher.find()) {
+            return matcher.group(1).trim();
         }
-        if (endIndex == -1) {
-            endIndex = inputString.length();
-        }
-        return inputString.substring(startIndex, endIndex).trim().replaceAll("[\n\r]", "");
+        return "";
     }
 
     /**
@@ -158,10 +150,8 @@ public class popService {
         StringBuilder lines = new StringBuilder();
         String line;
         while ((line = in.readLine()) != null) {
-            if (line.equals("."))
-                break;
-            if (line.startsWith("+OK"))
-                continue;
+            if (line.equals(".")) break;
+            if (line.startsWith("+OK")) continue;
             if (line.length() > 0 && line.charAt(0) == '.') {
                 line = line.substring(1);
             }
