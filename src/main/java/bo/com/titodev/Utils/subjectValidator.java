@@ -112,10 +112,10 @@ public class subjectValidator {
                     response = usuario.getAll(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
-                case "create":
-                    response = usuario.create(paramsList);
-                    smtp.sendEmail(emailEmisor, response);
-                    break;
+                // case "create":
+                // response = usuario.create(paramsList);
+                // smtp.sendEmail(emailEmisor, response);
+                // break;
                 case "update":
                     response = usuario.update(paramsList);
                     smtp.sendEmail(emailEmisor, response);
@@ -163,8 +163,8 @@ public class subjectValidator {
             }
             return;
         }
-       
-        if (opcion.toLowerCase().equals("permisos")) {
+
+        if (opcion.toLowerCase().equals("menus")) {
             if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
                 smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
                 return;
@@ -186,6 +186,102 @@ public class subjectValidator {
                     break;
                 case "delete":
                     response = permiso.delete(Integer.parseInt(paramsList.get(0)));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("administrativos")) {
+            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
+                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
+                return;
+            }
+            administrativoNegocio administrativo = new administrativoNegocio();
+            LinkedList<String> paramsList = administrativo.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = administrativo.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = administrativo.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = administrativo.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = administrativo.delete(paramsList.get(0));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("docentes")) {
+            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
+                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
+                return;
+            }
+            docenteNegocio docentes = new docenteNegocio();
+            LinkedList<String> paramsList = docentes.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = docentes.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = docentes.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = docentes.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = docentes.delete(paramsList.get(0));
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("estudiantes")) {
+            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
+                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
+                return;
+            }
+            estudianteNegocio estudiante = new estudianteNegocio();
+            LinkedList<String> paramsList = estudiante.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = estudiante.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "create":
+                    response = estudiante.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "update":
+                    response = estudiante.update(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "delete":
+                    response = estudiante.delete(paramsList.get(0));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 default:
@@ -292,13 +388,9 @@ public class subjectValidator {
             }
             return;
         }
-    
+
         if (opcion.toLowerCase().equals("dias")) {
 
-            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
-                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
-                return;
-            }
             diaNegocio dias = new diaNegocio();
             LinkedList<String> paramsList = dias.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
@@ -328,10 +420,6 @@ public class subjectValidator {
 
         if (opcion.toLowerCase().equals("materias")) {
 
-            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
-                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
-                return;
-            }
             materiaNegocio materias = new materiaNegocio();
             LinkedList<String> paramsList = materias.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
@@ -355,10 +443,12 @@ public class subjectValidator {
                     smtp.sendEmail(emailEmisor,
                             "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
                     break;
+
             }
             return;
+
         }
-      
+
         if (opcion.toLowerCase().equals("grupos_materias")) {
 
             if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
@@ -391,7 +481,7 @@ public class subjectValidator {
             }
             return;
         }
-      
+
         if (opcion.toLowerCase().equals("gupo_materia_horarios")) {
 
             if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
@@ -414,7 +504,7 @@ public class subjectValidator {
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "delete":
-                    response = grupoMateriaHorario.delete(paramsList.get(0),Integer.parseInt(paramsList.get(1)));
+                    response = grupoMateriaHorario.delete(paramsList.get(0), Integer.parseInt(paramsList.get(1)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 default:
@@ -427,27 +517,23 @@ public class subjectValidator {
 
         if (opcion.toLowerCase().equals("horarios")) {
 
-            if (!this.userValidate.validateRol(this.emailEmisor, "Admin")) {
-                smtp.sendEmail(this.emailEmisor, "No tienes permisos para realizar esta accion.");
-                return;
-            }
-            materiaNegocio materias = new materiaNegocio();
-            LinkedList<String> paramsList = materias.createList(parametros);
+            horarioNegocio horarios = new horarioNegocio();
+            LinkedList<String> paramsList = horarios.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
                 case "list":
-                    response = materias.getAll(paramsList);
+                    response = horarios.getAll(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "create":
-                    response = materias.create(paramsList);
+                    response = horarios.create(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "update":
-                    response = materias.update(paramsList);
+                    response = horarios.update(paramsList);
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 case "delete":
-                    response = materias.delete(paramsList.get(0));
+                    response = horarios.delete(Integer.parseInt(paramsList.get(0)));
                     smtp.sendEmail(emailEmisor, response);
                     break;
                 default:
@@ -491,12 +577,118 @@ public class subjectValidator {
             return;
         }
 
+        if (opcion.toLowerCase().equals("pagos")) {
+
+            pagoNegocio pagos = new pagoNegocio();
+            LinkedList<String> paramsList = pagos.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = pagos.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+
+                case "efectivo":
+                    response = pagos.create(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+
+                    break;
+
+                case "create":
+
+                    // Crear el formulario de pago y enviarlo por correo
+                    String pago = "<form method=\"post\" id=\"FormPagoFacil\" action=\"https://checkout.pagofacil.com.bo/es/pay\" enctype=\"multipart/form-data\" class=\"form\">"
+                            +
+                            "<input name=\"tcDatosCheckout\" id=\"tcDatosCheckout\" type=\"hidden\" value=\"NTEyNDdmYWUyODBjMjA0MTA4MjQ5NzdiMDc4MTQ1M2RmNTlmYWQ1YjIzYmYyYTBkMTRlODg0NDgyZjkxZT"
+                            +
+                            "A5MDc4ZGJlNTk2NmUwYjk3MGJhNjk2ZWM0Y2FmOWFhNSA2NjE4MDI5MzVmODY3MTdjNDgxZjE2NzBlNjNmMzVkNTA0MDBmZTJmYTRiYTI2YmQxMTFhNDFjMmNjNTcwZTM4OGVjZmIxYTA1ZThkNDU1MWY5NDljMjUyNmI4NjAyMCAwNmNhODA"
+                            +
+                            "wMTNmMjY4OTAzNDFmMTY2ZTQ2NDE2ZGZkYWExZDJiNzJjODMzZDFlMDkxOGNiNzE2YWIwYzU5YzUwZTY5fHBydWViYUBwcnVlYmEuY29tfDc3Nzc3Nzc3fDYgNjZ8MTIwfDJ8aHR0cHM6Ly9taWRvbWluaW8uY29tL2NhbGxiYWNrfGh0dHBzOi8vbWlkb21pbmlvLmNvbS9yZXR1cm58W3tcIlNlcmlhbFwiOjEsXCJQcm9kdWN0b1wiOlwiUFJPRFVDVE8gMVwiLFwiTGlua1BhZ29cIjowLFwiQ2FudGlkYWRcIjoyLFwiUHJlY2lvXCI6MTAsXCJEZXNjdWVudG9cIjowLFwiVG90YWxcIjoyMH0se1wiU2VyaWFsXCI6MixcIlByb2R1Y3RvXCI6XCJQUk9EIFVDVE8yXCIsXCJMaW5rUGFnb1wiOjAsXCJDYW50aWRhZFwiOjUsXCJQcmVjaW9cIjoyMCxcIkRlc2N1ZW50b1wiOjAsXCJUb3RhbFwiOjEwMH1dfDEx\">"
+                            +
+                            "<input name=\"tcCommerceID\" id=\"tcCommerceID\" type=\"hidden\" value=\"d029fa3a95e174a19934857f535eb9427d967218a36ea014b70ad704bc6c8d1c\">"
+                            +
+                            "<input type=\"submit\" class=\"btn btn-primary\" id=\"btnpagar\" value=\"pagar\">" +
+                            "</form>";
+
+                    smtp.sendEmail(emailEmisor, pago);
+                    break;
+
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("ofertas")) {
+
+            ofertasNegocio ofertas = new ofertasNegocio();
+            LinkedList<String> paramsList = ofertas.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "list":
+                    response = ofertas.getAll(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
+        if (opcion.toLowerCase().equals("reportes")) {
+
+            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
+            // black;\">EGRESOS POR GESTION </td> \n \n"
+            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
+            // black;\">EGRESOS-REPORTES []</td> \n \n"
+            // + "</tr> \n \n"
+            // + "<tr> \n \n"
+            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
+            // black;\">INGRESOS POR GESTION </td> \n \n"
+            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
+            // black;\">INGRESOS-REPORTES [] </td> \n \n"
+            // + "</tr> \n \n"
+            // + "<tr> \n \n"
+            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
+            // black;\">ESTUDIANTES POR CARRERA </td> \n \n"
+            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
+            // black;\">ESTUDIANTES-REPORTES [] </td> \n \n"
+
+            reporteNegocio reportes = new reporteNegocio();
+            LinkedList<String> paramsList = reportes.createList(parametros);
+            switch (opcionArray[0].toLowerCase()) {
+                case "egresos":
+                    response = reportes.getEgresosPorGestion(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+                case "ingresos":
+                    response = reportes.getIngresosPorGestion(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+
+                case "estudiantes":
+                    response = reportes.getEstudiantesPorCarrera(paramsList);
+                    smtp.sendEmail(emailEmisor, response);
+                    break;
+
+                default:
+                    smtp.sendEmail(emailEmisor,
+                            "No se reconoce el formato indicado. Verifique que sea una de estas opciones List, Get, Create, Update, Delete.");
+                    break;
+            }
+            return;
+        }
+
         smtp.sendEmail(emailEmisor, "Comando incorrecto, Verifique que este enviando bien los comandos");
     }
 
     private String AllComand() {
 
         return "<h1>ESCUELA ETA</h1>"
+
                 + "<table style=\" border-collapse: collapse; width: 100%; border: 1px solid black; padding: 8px;\"> \n \n"
                 + "<tr> \n \n"
                 + "<th style=\"text-align: center; padding: 8px; background-color: #1C7293; color: white; border: 1px solid black;\"> FUNCIONALIDAD </th> \n \n"
@@ -518,12 +710,14 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar roles</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-ROLES [] || LIST-ROLES [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
+                + "<tr> \n \n"
 
-                + "<tr> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar usuarios</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-USUARIOS [NOMBRE, CORREO, CONTRASEÑA,  ROL_ID]</td> \n \n"
-                + "</tr> \n \n"
-                + "<tr> \n \n"
+                // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
+                // black;\">Registrar usuarios</td> \n \n"
+                // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
+                // black;\">CREATE-USUARIOS [NOMBRE, CORREO, CONTRASEÑA, ROL_ID]</td> \n \n"
+                // + "</tr> \n \n"
+                // + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar usuario</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-USUARIOS [ID, NOMBRE, CORREO, CONTRASEÑA,  ROL_ID]</td> \n \n"
                 + "</tr> \n \n"
@@ -534,6 +728,74 @@ public class subjectValidator {
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar usuarios</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-USUARIOS [] || LIST-USUARIO [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar Estudiantes</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-ESTUDIANTES [CI,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,TELEFONO,SEXO,FECHA NACIMIENTO,USER_ID=0,EMAIL]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar Estudiantes</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-ESTUDIANTES [CI,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,TELEFONO,SEXO,FECHA NACIMIENTO,USER_ID,EMAIL]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar Estudiantes</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-ESTUDIANTES [CI]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar Estudiantes</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-ESTUDIANTES [] || LIST-ESTUDIANTES [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar Docentes</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-DOCENTES [CI,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,TELEFONO,KARDEX,CURRICULUM,EMAIL,USER_ID=0]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar Docentes</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-DOCENTES [CI,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,TELEFONO,KARDEX,CURRICULUM,EMAIL,USER_ID]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar Docentes</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-DOCENTES [CI]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar Docentes</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-DOCENTES [] || LIST-DOCENTES [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar Administrativos</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-ADMINISTRATIVOS [CI,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,TELEFONO,SEXO,FECHA NACIMIENTO,USER_ID=0,EMAIL]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar Administrativos</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-ADMINISTRATIVOS [CI,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,TELEFONO,SEXO,FECHA NACIMIENTO,USER_ID,EMAIL]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar Administrativos</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-ADMINISTRATIVOS [CI]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar Administrativos</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-ADMINISTRATIVOS [] || LIST-ADMINISTRATIVOS [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+                // int codigo, String descripcion, Date fecha_inicio, Date fecha_fin
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar Gestiones</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-GESTIONES [DESCRIPCION, FECHA_INI,FECHA_FIN]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar Gestiones</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-GESTIONES [COD,DESCRIPCION, FECHA_INI,FECHA_FIN]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar Gestiones</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-GESTIONES [COD]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar Gestiones</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-GESTIONES [] || LIST-GESTIONES [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
 
                 + "<tr> \n \n"
@@ -569,8 +831,7 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar materias </td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-MATERIAS [] || LIST-MATERIAS [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
-
+                // NIVELES DE LAS CARRERAS
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar  niveles </td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-NIVELES [NOMBRE]</td> \n \n"
@@ -586,6 +847,102 @@ public class subjectValidator {
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar niveles </td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-NIVELES [] || LIST-NIVELES [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+                // INSCRIPCION A CARRERAS DE LOS ESTUDIANTES
+                // (int id, String fechaInscripcion, String estudianteCi, String carreraSigla)
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar  Inscripcion Carrera </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-INSCARRERA [FECHA,EST_CI,CARRERASIGLA]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar  Inscripcion Carrera </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-INSCARRERA [ID,FECHA,EST_CI,CARRERASIGLA]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar  Inscripcion Carrera </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-INSCARRERA [ID]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar Inscripcion Carrera </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-INSCARRERA [] || LIST-INSCARRERA [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+                // int id, Date fecha, String grupoMateriaSigla, String estudiante_ci
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar  Inscripcion Materia </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-INSCMAT [FECHA,GRUPOSIGLA,EST_CI]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar  Inscripcion Materia </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-INSCMAT [ID,FECHA,GRUPOSIGLA,EST_CI]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar  Inscripcion Materia </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-INSCMAT [ID]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar Inscripcion Materia </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-INSCMAT [] || LIST-INSCMAT [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+                // NOTAS DE ALUMNOS POR MATERIAS
+                // (int id, int estudianteMateriaId, double notaFinal)
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar Notas </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-NOTAS [EST_MAT_ID,NOTA]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar Notas </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-NOTAS [ID,EST_MAT_ID,NOTA]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar Notas </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-NOTAS [ID]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">ListarNotas </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-NOTAS [] || LIST-NOTAS [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+                // Pagos efectivo
+                // (int id, double monto, Date fecha, String concepto, int estudianteMateria
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar  Pagos </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-PAGOS [MONTO,FECHA,CONCEPTO,EST_MAT_ID]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar  Pagos </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">EFECTIVO-PAGOS []</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar  Pagos </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-PAGOS [ID,MONTO,FECHA,CONCEPTO,EST_MAT_ID]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar  Pagos </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">DELETE-PAGOS [ID]</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar Pagos </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-PAGOS [] || LIST-PAGOS [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+                // OFERTAS
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar Ofertas </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-OFERTAS [] || LIST-OFERTAS [KEY, VALOR]</td> \n \n"
+                + "</tr> \n \n"
+
+                // REPORTES
+
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">EGRESOS POR GESTION </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">EGRESOS-REPORTES []</td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">INGRESOS POR GESTION </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">INGRESOS-REPORTES [] </td> \n \n"
+                + "</tr> \n \n"
+                + "<tr> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">ESTUDIANTES POR CARRERA </td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">ESTUDIANTES-REPORTES [] </td> \n \n"
                 + "</tr> \n \n"
 
                 + "</table>";

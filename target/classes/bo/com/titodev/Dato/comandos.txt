@@ -1,0 +1,23 @@
+crear administrativos
+CREATE-ADMINISTRATIVOS [11, Juan, Perez, Rojas, 11, M, 2000-03-12, 0, juanperez@gmail.com]
+CREATE-ADMINISTRATIVOS [12, Maria, Garcia, Lopez, 22, F, 1995-07-25, 0, mariagarcia@gmail.com]
+CREATE-ADMINISTRATIVOS [13, Carlos, Martinez, Diaz, 33, M, 1988-11-05, 0, carlosmartinez@gmail.com]
+CREATE-ADMINISTRATIVOS [14, Ana, Rodriguez, Sanchez, 44, F, 1993-01-20, 0, anarodriguez@gmail.com]
+CREATE-ADMINISTRATIVOS [15, Luis, Hernandez, Morales, 55, M, 2001-09-17, 0, luishernandez@gmail.com]
+
+crear docentes
+
+CREATE-DOCENTES [106, Pedro, Fernández, Alvarez, K67890, Curriculum Vitae 6, pedrofernandezdocente@gmail.com, 0]
+CREATE-DOCENTES [107, Laura, Torres, Romero, K78901, Curriculum Vitae 7, lauratorresdocente@gmail.com, 0]
+CREATE-DOCENTES [108, Diego, Ruiz, Benitez, K89012, Curriculum Vitae 8, diegoruizdocente@gmail.com, 0]
+CREATE-DOCENTES [109, Sofia, Jimenez, Castro, K90123, Curriculum Vitae 9, sofiajimenezdocente@gmail.com, 0]
+CREATE-DOCENTES [110, Miguel, Ortiz, Vargas, K01234, Curriculum Vitae 10, miguelortizdocente@gmail.com, 0]
+
+crear estudiantes 
+
+CREATE-ESTUDIANTES [201, Paula, Gomez, Sanchez, 5551234, F, 2001-04-23, 0, paulagomezestudiante@gmail.com]
+CREATE-ESTUDIANTES [202, Andres, Ramirez, Torres, 5555678, M, 2002-05-14, 0, andresramirezestudiante@gmail.com]
+CREATE-ESTUDIANTES [203, Lucia, Diaz, Moreno, 5559101, F, 2003-06-19, 0, luciadiazmestudiante@gmail.com]
+CREATE-ESTUDIANTES [204, Sergio, Perez, Gonzalez, 5551121, M, 2004-07-08, 0, sergioperezestudiante@gmail.com]
+CREATE-ESTUDIANTES [205, Elena, Romero, Fernandez, 5553141, F, 2005-08-15, 0, elenaromeroestudiante@gmail.com]
+

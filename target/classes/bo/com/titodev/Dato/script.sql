@@ -44,11 +44,12 @@ CREATE TABLE estudiantes (
     email VARCHAR(255) NOT NULL UNIQUE,
     telefono VARCHAR(255) NULL,
     sexo CHAR(1) CHECK (sexo IN ('M', 'F')),
-    fecha_nacimiento DATE NOT NULL,
+    fecha_nacimiento VARCHAR NOT NULL,
     usuario_id INT NOT NULL,
     FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
     
  );
+
 
 
 
@@ -60,7 +61,7 @@ CREATE TABLE administrativos (
     telefono VARCHAR(255) NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     sexo CHAR(1) CHECK (sexo IN ('M', 'F')),
-    fecha_nacimiento DATE NOT NULL,
+    fecha_nacimiento VARCHAR NOT NULL,
     usuario_id INT NOT NULL,
     FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
   
@@ -77,8 +78,11 @@ CREATE TABLE docentes (
      usuario_id INT NOT NULL, -- Agregado usuario_id
      FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
 );
+ 
+
 -- ///////////////////////////////////////////////////////////
- CREATE OR REPLACE FUNCTION insertar_usuario(
+-- ///////////////////////////////////////////////////////////
+CREATE OR REPLACE FUNCTION insertar_usuario(
     p_email VARCHAR,
     p_password VARCHAR,
     p_rol_id INT,
@@ -96,9 +100,11 @@ BEGIN
     RETURN v_usuario_id;
 END;
 $$ LANGUAGE plpgsql;
+
+
 -- ///////////////////////////////////////////////////////////
 
- CREATE OR REPLACE PROCEDURE insertar_estudiante(
+CREATE OR REPLACE FUNCTION insertar_estudiante(
     p_ci VARCHAR,
     p_nombre VARCHAR,
     p_apellido_pat VARCHAR,
@@ -106,23 +112,24 @@ $$ LANGUAGE plpgsql;
     p_email VARCHAR,
     p_telefono VARCHAR,
     p_sexo CHAR,
-    p_fecha_nacimiento DATE
+    p_fecha_nacimiento VARCHAR
 )
-LANGUAGE plpgsql
-AS $$
+RETURNS INT AS $$
 DECLARE
     v_usuario_id INT;
-BEGIN
+ BEGIN
     -- Insertar un nuevo usuario y obtener su ID
     v_usuario_id := insertar_usuario(p_email, p_ci, 3, 1);  -- Ajustar rol_id y tematica_id según sea necesario
 
     -- Insertar un nuevo estudiante en la tabla estudiantes
     INSERT INTO estudiantes (ci, nombre, apellido_pat, apellido_mat, email, telefono, sexo, fecha_nacimiento, usuario_id)
     VALUES (p_ci, p_nombre, p_apellido_pat, p_apellido_mat, p_email, p_telefono, p_sexo, p_fecha_nacimiento, v_usuario_id);
+
+    RETURN v_usuario_id;
 END;
-$$;
--- ///////////////////////////////////////////////////////////
-CREATE OR REPLACE PROCEDURE insertar_docente(
+$$ LANGUAGE plpgsql;
+-- //////////////////////////////////////////////////////////
+CREATE OR REPLACE FUNCTION insertar_docente(
     p_ci VARCHAR,
     p_nombre VARCHAR,
     p_apellido_pat VARCHAR,
@@ -131,22 +138,23 @@ CREATE OR REPLACE PROCEDURE insertar_docente(
     p_kardex VARCHAR,
     p_curriculum VARCHAR
 )
-LANGUAGE plpgsql
-AS $$
+RETURNS INT AS $$
 DECLARE
     v_usuario_id INT;
-BEGIN
+ BEGIN
     -- Insertar un nuevo usuario y obtener su ID
     v_usuario_id := insertar_usuario(p_email, p_ci, 2, 1);  -- Ajustar rol_id y tematica_id según sea necesario
 
     -- Insertar un nuevo docente en la tabla docentes
     INSERT INTO docentes (ci, nombre, apellido_pat, apellido_mat, email, kardex, curriculum, usuario_id)
     VALUES (p_ci, p_nombre, p_apellido_pat, p_apellido_mat, p_email, p_kardex, p_curriculum, v_usuario_id);
-END;
-$$;
--- ///////////////////////////////////////////////////////////
 
-CREATE OR REPLACE PROCEDURE insertar_administrativo(
+    RETURN v_usuario_id;
+END;
+$$ LANGUAGE plpgsql;
+-- //////////////////////////////////////////////////////////
+
+CREATE OR REPLACE FUNCTION insertar_administrativo(
     p_ci VARCHAR,
     p_nombre VARCHAR,
     p_apellido_pat VARCHAR,
@@ -154,21 +162,25 @@ CREATE OR REPLACE PROCEDURE insertar_administrativo(
     p_email VARCHAR,
     p_telefono VARCHAR,
     p_sexo CHAR,
-    p_fecha_nacimiento DATE
+    p_fecha_nacimiento VARCHAR
 )
-LANGUAGE plpgsql
-AS $$
+RETURNS INT AS $$
 DECLARE
     v_usuario_id INT;
-BEGIN
+ BEGIN
     -- Insertar un nuevo usuario y obtener su ID
     v_usuario_id := insertar_usuario(p_email, p_ci, 1, 1);  -- Ajustar rol_id y tematica_id según sea necesario
 
     -- Insertar un nuevo administrativo en la tabla administrativos
     INSERT INTO administrativos (ci, nombre, apellido_pat, apellido_mat, telefono, email, sexo, fecha_nacimiento, usuario_id)
     VALUES (p_ci, p_nombre, p_apellido_pat, p_apellido_mat, p_telefono, p_email, p_sexo, p_fecha_nacimiento, v_usuario_id);
+
+    RETURN v_usuario_id;
 END;
-$$;
+$$ LANGUAGE plpgsql;
+
+-- ////////////////////////////////////////////////////////////////////
+
 
 -- ///////////### TRIGGER  ###/////////////////////
 
@@ -243,7 +255,7 @@ CREATE TABLE dias (
     nombre VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE gupo_materia_horarios (
+CREATE TABLE gupo_materia_horarios ( 
     grupo_sigla VARCHAR(10) NOT NULL,
     horario_id INT NOT NULL,
     dia_id INT NOT NULL,
@@ -291,6 +303,48 @@ CREATE TABLE pagos (
  
  );
 
+-- // GESTION DE OFERTAS, GENERACION DE OFERTAS
+
+ CREATE VIEW ofertas_view AS
+SELECT 
+    m.descripcion AS "Materia",
+    g.descripcion AS "Grupo",
+    h.hora_inicio AS "Hora Inicio",
+    h.hora_fin AS "Hora Fin",
+    CONCAT(d.nombre, ' ', d.apellido_pat, ' ', d.apellido_mat) AS "Profesor",
+    ges.descripcion AS "Gestión"
+FROM 
+    materias m
+JOIN 
+    carreras_materias cm ON m.sigla = cm.materia_sigla
+JOIN 
+    grupos_materias g ON cm.carrera_sigla = g.carrera_sigla
+JOIN 
+    horarios h ON g.sigla = h.sigla
+JOIN 
+    docentes d ON g.docente_ci = d.ci
+JOIN 
+    gestiones ges ON d.gestion_codigo = ges.codigo;
+
+
+
+
+
+/*
+REPORTES
+
+CANTIDAD DE ESTUDIANTES POR CARRERA
+
+CANTIDAD DE ESTUDIANTES POR CARRERA
+
+
+
+
+
+*/
+
+
+
 --  DATOS
 -- Datos de roles
 INSERT INTO roles (nombre) VALUES
@@ -298,36 +352,26 @@ INSERT INTO roles (nombre) VALUES
 ('Docente'),
 ('Estudiante');
 
--- Datos de usuarios
-INSERT INTO usuarios (email, password, password_reset, rol_id) VALUES
-('titocarlos080@gmail.com', '123', NULL, 1),
-('admin@tecnicaeta.com', 'adminpassword', NULL, 1),
-('docente1@tecnicaeta.com', 'docentepassword1', NULL, 2),
-('docente2@tecnicaeta.com', 'docentepassword2', NULL, 2),
-('estudiante1@tecnicaeta.com', 'estudiantepassword1', NULL, 3),
-('estudiante2@tecnicaeta.com', 'estudiantepassword2', NULL, 3);
 
--- Datos de personas
-INSERT INTO personas (ci, nombre, apellido_pat, apellido_mat, telefono, sexo, fecha_nacimiento, usuario_id) VALUES
-('12345678', 'Juan', 'Perez', 'Gomez', '123456789', 'M', '1980-05-15', 1),
-('23456789', 'Maria', 'Lopez', 'Diaz', '234567890', 'F', '1985-06-20', 2),
-('34567890', 'Pedro', 'Garcia', 'Martinez', '345678901', 'M', '1990-07-25', 3),
-('45678901', 'Ana', 'Rodriguez', 'Fernandez', '456789012', 'F', '1995-08-30', 4),
-('56789012', 'Luis', 'Gonzalez', 'Sanchez', '567890123', 'M', '2000-09-05', 5);
 
--- Datos de estudiantes
-INSERT INTO estudiantes (personas_ci) VALUES
-('45678901'),
-('56789012');
+INSERT INTO tematicas (nombre) VALUES
+('Dia'),
+('Noche'),
+('Niño'),
+('Joven'),
+('Adulto');
 
--- Datos de administrativos
-INSERT INTO administrativos (personas_ci) VALUES
-('12345678');
-
--- Datos de docentes
-INSERT INTO docentes (personas_ci) VALUES
-('23456789'),
-('34567890');
+SELECT insertar_administrativo(
+    '123',     -- p_ci
+    'Tito',           -- p_nombre
+    'Carlos',          -- p_apellido_pat
+    'Gutierrez',         -- p_apellido_mat
+    'titocarlos080@gmail.com', -- p_email
+    '123456789',      -- p_telefono
+    'M',              -- p_sexo (F o M)
+    '2000-01-15'      -- p_fecha_nacimiento
+);
+  
 
 -- Datos de gestiones
 INSERT INTO gestiones (descripcion, fecha_inicio, fecha_fin) VALUES
@@ -376,26 +420,7 @@ INSERT INTO dias (nombre) VALUES
 ('Jueves'),
 ('Viernes');
 
--- Datos de grupos_horarios
-INSERT INTO grupos_horarios (grupo_sigla, horario_id, dia_id) VALUES
-('G1', 1, 1),
-('G2', 2, 2),
-('G3', 3, 3);
-
--- Datos de inscripciones
-INSERT INTO inscripciones (estudiante_id, grupo_sigla, fecha) VALUES
-(1, 'G1', '2024-02-01'),
-(2, 'G2', '2024-02-01');
-
--- Datos de pagos
-INSERT INTO pagos (monto, fecha, concepto, inscripcion_id) VALUES
-(500.00, '2024-02-15', 'Pago de Inscripcion', 1),
-(500.00, '2024-02-15', 'Pago de Inscripcion', 2);
-
--- Datos de notas
-INSERT INTO notas (estudiante_id, docente_id, grupo_sigla, nota_final) VALUES
-(1, 1, 'G1', 85.50),
-(2, 2, 'G2', 90.00);
+ 
 
  INSERT INTO egresos (monto, fecha, concepto, gestion_codigo) VALUES
 (1500.50, '2023-01-15', 'Compra de materiales de oficina', 1),

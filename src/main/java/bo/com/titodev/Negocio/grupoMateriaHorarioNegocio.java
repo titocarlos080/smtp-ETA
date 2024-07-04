@@ -5,7 +5,7 @@ import bo.com.titodev.Utils.validatorUtils;
 import java.util.LinkedList;
 
 public class grupoMateriaHorarioNegocio {
-
+ 
     private grupoMateriaHorarioDato gmhModel;
     private String respuesta;
 

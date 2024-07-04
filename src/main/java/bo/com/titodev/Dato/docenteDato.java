@@ -102,7 +102,7 @@ public class docenteDato {
 
     // CRUD
        public boolean create() {
-        String sql = "{call insertar_docente(?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{call public.insertar_docente(?, ?, ?, ?, ?, ?, ?)}";
         try (Connection con = ConexionDB.getInstance().connect();
              CallableStatement cs = con.prepareCall(sql)) {
             cs.setString(1, this.ci);

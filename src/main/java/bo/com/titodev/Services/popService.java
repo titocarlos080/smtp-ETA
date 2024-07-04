@@ -8,7 +8,7 @@ import bo.com.titodev.Utils.*;
 public class popService {
 
     // Constantes para la configuración del servidor POP3
-    private final String SERVER = "gonzalotech.ciencia.bo";//"mail.tecnoweb.org.bo";
+    private final String SERVER = "gonzalotech.ciencia.bo";//"mail.tecnoweb.org.bo";//
     private final String USUARIO ="tito.carlos"; //"grupo05sc";
     private final String CONTRASEÑA ="tito";// "grup005grup005";
     private final int PUERTO = 110;

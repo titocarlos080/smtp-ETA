@@ -108,11 +108,11 @@ public class estudianteDato {
 
     public void setEmail(String email) {
         this.email = email;
-    }
+    } 
 
     // Métodos CRUD
     public boolean create() {
-    String sql = "{call insertar_estudiante(?, ?, ?, ?, ?, ?, ?, ?)}"; // Definir la llamada a la función almacenada
+    String sql = "{call public.insertar_estudiante(?, ?, ?, ?, ?, ?, ?, ?)}"; // Definir la llamada a la función almacenada
     try (Connection con = ConexionDB.getInstance().connect(); 
          CallableStatement cs = con.prepareCall(sql)) {
         

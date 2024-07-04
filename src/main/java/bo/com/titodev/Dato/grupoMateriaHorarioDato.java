@@ -47,7 +47,7 @@ public class grupoMateriaHorarioDato {
         this.diaId = diaId;
     }
 
-    // Métodos CRUD
+    // Métodos CRUD 
     public boolean create() {
         String sql = "INSERT INTO gupo_materia_horarios (grupo_sigla, horario_id, dia_id) VALUES (?, ?, ?)";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {

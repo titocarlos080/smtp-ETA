@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import bo.com.titodev.Services.ConexionDB;
 
 public class pagoDato {
-    private int id;
+    private int id; 
     private double monto;
     private  Date fecha;
     private String concepto;

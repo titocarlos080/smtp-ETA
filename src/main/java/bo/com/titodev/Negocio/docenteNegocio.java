@@ -1,14 +1,12 @@
- package bo.com.titodev.Negocio;
+package bo.com.titodev.Negocio;
 
-import java.sql.Date;
 import java.util.LinkedList;
 
- import bo.com.titodev.Dato.estudianteDato;
+import bo.com.titodev.Dato.docenteDato;
 import bo.com.titodev.Utils.validatorUtils;
-
-public class estudianteNegocio {
-      
-private estudianteDato estudiante;
+ 
+public class docenteNegocio {
+       private docenteDato docente;
     private String respuesta;
 
     public String create(LinkedList<String> params) {
@@ -17,11 +15,11 @@ private estudianteDato estudiante;
             return this.respuesta;
         }
 
-        estudiante = new estudianteDato(
+        docente = new docenteDato(
                 params.get(0), params.get(1), params.get(2),
-                params.get(3), params.get(4), params.get(5).charAt(0),
-                Date.valueOf(params.get(6)), Integer.parseInt(params.get(7)), params.getLast());    
-            if (estudiante.create()) {
+                params.get(3), params.get(4),   params.get(5),
+                params.get(6),Integer.parseInt(params.get(7)));
+        if (docente.create()) {
             respuesta = "Creado exitosamente.";
         } else {
             respuesta = "No se pudo crear.";
@@ -34,12 +32,13 @@ private estudianteDato estudiante;
         if (this.respuesta != null) {
             return this.respuesta;
         }
-        estudiante = new estudianteDato(
-            params.get(0), params.get(1), params.get(2),
-            params.get(3), params.get(4), params.get(5).charAt(0),
-            Date.valueOf(params.get(6)), Integer.parseInt(params.get(7)), params.getLast());    
+     
+        docente = new docenteDato(
+                params.get(0), params.get(1), params.get(2),
+                params.get(3), params.get(4),   params.get(5),
+                params.get(6),Integer.parseInt(params.get(7))); 
             
-            if (estudiante.update()) {
+            if (docente.update(params.get(0))) {
             respuesta = "Actualizado exitosamente.";
         } else {
             respuesta = "No se pudo actualizar.";
@@ -51,8 +50,8 @@ private estudianteDato estudiante;
         if (!validatorUtils.validateString(ci)) {
             return "El id debe ser un numero";
         }
-        estudiante.setCi(ci);
-        if (estudiante.delete()) {
+        docente.setCi(ci);
+        if (docente.delete(ci)) {
             respuesta = "Eliminado exitosamente.";
         } else {
             respuesta = "No se pudo eliminar.";
@@ -61,15 +60,14 @@ private estudianteDato estudiante;
     }
 
     public String getAll(LinkedList<String> params) {
-        return estudiante.getAll(params);
+        return docente.getAll(params);
     }
 
     public boolean exist(String ci) {
-        return estudiante.exist(ci);
+        return docente.exist(ci);
     }
     private void validateCreate(LinkedList<String> params) {
-        estudiante = new estudianteDato();
-        int expectedParamCount = 9; // Número de parámetros esperados
+        int expectedParamCount = 8; // Número de parámetros esperados
     
         // Validar la cantidad de parámetros
         if (params.size() != expectedParamCount) {
@@ -77,48 +75,52 @@ private estudianteDato estudiante;
             return;
         }
     
-        // Validar nombre
+        // Validar CI
         if (!validatorUtils.validateString(params.get(0))) {
             this.respuesta = "El CI no puede ser vacío";
             return;
         }
     
-        // Validar otros parámetros (nombre, apellido_pat, apellido_mat, telefono, sexo, fecha_nacimiento, email)
+        // Validar nombre
         if (!validatorUtils.validateString(params.get(1))) {
             this.respuesta = "El nombre no puede ser vacío";
             return;
         }
+    
+        // Validar apellido paterno
         if (!validatorUtils.validateString(params.get(2))) {
             this.respuesta = "El apellido paterno no puede ser vacío";
             return;
         }
+    
+        // Validar apellido materno
         if (!validatorUtils.validateString(params.get(3))) {
             this.respuesta = "El apellido materno no puede ser vacío";
             return;
         }
+    
+        // Validar kardex
         if (!validatorUtils.validateString(params.get(4))) {
-            this.respuesta = "El teléfono no puede ser vacío";
+            this.respuesta = "El kardex no puede ser vacío";
             return;
         }
-        if (params.get(5).length() != 1) {
-            this.respuesta = "El sexo debe ser un solo carácter";
+    
+        // Validar curriculum
+        if (!validatorUtils.validateString(params.get(5))) {
+            this.respuesta = "El curriculum no puede ser vacío";
             return;
         }
-        try {
-            Date.valueOf(params.get(6));
-        } catch (IllegalArgumentException e) {
-            this.respuesta = "La fecha de nacimiento no es válida";
-            return;
-        }
-        if (!validatorUtils.validateEmail(params.get(7))) {
+    
+        // Validar email
+        if (!validatorUtils.validateEmail(params.get(6))) {
             this.respuesta = "El email no es válido";
             return;
         }
     
        
+    
     }
     
-
     public LinkedList<String> createList(String[] params) {
         LinkedList<String> list = new LinkedList<>();
         for (String param : params) {
@@ -127,5 +129,4 @@ private estudianteDato estudiante;
         }
         return list;
     }
-
 }
