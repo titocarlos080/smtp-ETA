@@ -15,18 +15,18 @@ public class docenteDato {
     private String apellido_pat;
     private String apellido_mat;
     private String kardex;
-    private String currilculum;
+    private String curriculum;
     private String email; // Añadido campo 'email'
     private Integer usuario_id; // Cambio de int a Integer para permitir valores nulos
 
     public docenteDato(String ci, String nombre, String apellido_pat, String apellido_mat, String kardex,
-            String currilculum, String email, Integer usuario_id) {
+            String curriculum, String email, Integer usuario_id) {
         this.ci = ci;
         this.nombre = nombre;
         this.apellido_pat = apellido_pat;
         this.apellido_mat = apellido_mat;
         this.kardex = kardex;
-        this.currilculum = currilculum;
+        this.curriculum = curriculum;
         this.email = email;
         this.usuario_id = usuario_id;
     }
@@ -76,12 +76,12 @@ public class docenteDato {
         this.kardex = kardex;
     }
 
-    public String getCurrilculum() {
-        return currilculum;
+    public String getcurriculum() {
+        return curriculum;
     }
 
-    public void setCurrilculum(String currilculum) {
-        this.currilculum = currilculum;
+    public void setcurriculum(String curriculum) {
+        this.curriculum = curriculum;
     }
 
     public String getEmail() {
@@ -111,7 +111,7 @@ public class docenteDato {
             cs.setString(4, this.apellido_mat);
             cs.setString(5, this.email);
             cs.setString(6, this.kardex);
-            cs.setString(7, this.currilculum);
+            cs.setString(7, this.curriculum);
             int result = cs.executeUpdate();
             return result > 0;
         } catch (SQLException e) {
@@ -134,7 +134,7 @@ public boolean delete(String ci) {
 }
 // Actualizar un docente por CI
 public boolean update(String ci) {
-    String sql = "UPDATE docentes SET nombre = ?, apellido_pat = ?, apellido_mat = ?, email = ?, kardex = ?, currilculum = ? WHERE ci = ?";
+    String sql = "UPDATE docentes SET nombre = ?, apellido_pat = ?, apellido_mat = ?, email = ?, kardex = ?, curriculum = ? WHERE ci = ?";
     try (Connection con = ConexionDB.getInstance().connect();
          PreparedStatement ps = con.prepareStatement(sql)) {
         ps.setString(1, this.nombre);
@@ -142,7 +142,7 @@ public boolean update(String ci) {
         ps.setString(3, this.apellido_mat);
         ps.setString(4, this.email);
         ps.setString(5, this.kardex);
-        ps.setString(6, this.currilculum);
+        ps.setString(6, this.curriculum);
         ps.setString(7, ci);
         int result = ps.executeUpdate();
         return result > 0;
@@ -200,7 +200,7 @@ public boolean update(String ci) {
                                 + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("apellido_pat") + "</td>\n"
                                 + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("apellido_mat") + "</td>\n"
                                 + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("kardex") + "</td>\n"
-                                + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("currilculum") + "</td>\n"
+                                + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("curriculum") + "</td>\n"
                                 + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("email") + "</td>\n"
                                 + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getInt("usuario_id") + "</td>\n"
                                 + "  </tr>\n";
@@ -241,7 +241,7 @@ public boolean update(String ci) {
                             + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("apellido_pat") + "</td>\n"
                             + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("apellido_mat") + "</td>\n"
                             + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("kardex") + "</td>\n"
-                            + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("currilculum") + "</td>\n"
+                            + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("curriculum") + "</td>\n"
                             + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("email") + "</td>\n"
                             + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getInt("usuario_id") + "</td>\n"
                             + "  </tr>\n";

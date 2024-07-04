@@ -49,7 +49,7 @@ public class grupoMateriaHorarioDato {
 
     // Métodos CRUD 
     public boolean create() {
-        String sql = "INSERT INTO gupo_materia_horarios (grupo_sigla, horario_id, dia_id) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO grupo_materia_horarios (grupo_sigla, horario_id, dia_id) VALUES (?, ?, ?)";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, grupoSigla);
             ps.setInt(2, horarioId);
@@ -63,7 +63,7 @@ public class grupoMateriaHorarioDato {
     }
 
     public boolean update() {
-        String sql = "UPDATE gupo_materia_horarios SET dia_id = ? WHERE grupo_sigla = ? AND horario_id = ?";
+        String sql = "UPDATE grupo_materia_horarios SET dia_id = ? WHERE grupo_sigla = ? AND horario_id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, diaId);
             ps.setString(2, grupoSigla);
@@ -77,7 +77,7 @@ public class grupoMateriaHorarioDato {
     }
 
     public boolean delete() {
-        String sql = "DELETE FROM gupo_materia_horarios WHERE grupo_sigla = ? AND horario_id = ?";
+        String sql = "DELETE FROM grupo_materia_horarios WHERE grupo_sigla = ? AND horario_id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, grupoSigla);
             ps.setInt(2, horarioId);
@@ -90,7 +90,7 @@ public class grupoMateriaHorarioDato {
     }
 
     public boolean exist(String grupoSigla, int horarioId) {
-        String sql = "SELECT * FROM gupo_materia_horarios WHERE grupo_sigla = ? AND horario_id = ?";
+        String sql = "SELECT * FROM grupo_materia_horarios WHERE grupo_sigla = ? AND horario_id = ?";
         try (Connection con = ConexionDB.getInstance().connect(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, grupoSigla);
             ps.setInt(2, horarioId);
@@ -118,11 +118,11 @@ public class grupoMateriaHorarioDato {
         try {
             String query;
             if (params.size() == 0) {
-                query = "SELECT * FROM gupo_materia_horarios";
+                query = "SELECT * FROM grupo_materia_horarios";
                 Connection con = ConexionDB.getInstance().connect();
                 ps = con.prepareStatement(query);
             } else {
-                query = "SELECT * FROM gupo_materia_horarios WHERE " + params.get(0) + " LIKE ?";
+                query = "SELECT * FROM grupo_materia_horarios WHERE " + params.get(0) + " LIKE ?";
                 Connection con = ConexionDB.getInstance().connect();
                 ps = con.prepareStatement(query);
                 ps.setString(1, "%" + params.get(1) + "%");

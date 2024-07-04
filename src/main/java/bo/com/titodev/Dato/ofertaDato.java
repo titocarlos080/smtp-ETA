@@ -80,7 +80,7 @@ public class ofertaDato {
         this.gestion = gestion;
     }
 
-    // Método para obtener todos los datos de la vista ofertas_view
+    // Método para obtener todos los datos de la vista ofertas
     public String getAll(LinkedList<String> params) {
         String tabla = "";
         PreparedStatement ps = null;
@@ -100,10 +100,10 @@ public class ofertaDato {
             String query;
             Connection con = ConexionDB.getInstance().connect();
             if (params.size() == 0) {
-                query = "SELECT * FROM ofertas_view";
+                query = "SELECT * FROM ofertas";
                 ps = con.prepareStatement(query);
             } else {
-                query = "SELECT * FROM ofertas_view WHERE " + params.get(0) + " LIKE ?";
+                query = "SELECT * FROM ofertas WHERE " + params.get(0) + " LIKE ?";
                 ps = con.prepareStatement(query);
                 ps.setString(1, "%" + params.get(1) + "%");
             }
@@ -111,12 +111,12 @@ public class ofertaDato {
             resultado = ps.executeQuery();
             while (resultado.next()) {
                 tabla += "  <tr>\n"
-                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("Materia") + "</td>\n"
-                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("Grupo") + "</td>\n"
-                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("Hora Inicio") + "</td>\n"
-                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("Hora Fin") + "</td>\n"
-                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("Profesor") + "</td>\n"
-                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("Gestión") + "</td>\n"
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("materia_sigla") + "</td>\n"
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("grupo_materia_descripcion") + "</td>\n"
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("hora_inicio") + "</td>\n"
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("hora_fin") + "</td>\n"
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("docente_nombre") + "</td>\n"
+                        + "    <td style = \"text-align: left; padding: 8px; border: 1px solid black;\">" + resultado.getString("gestion_descripcion") + "</td>\n"
                         + "  </tr>\n";
             }
             tabla += "</table>";

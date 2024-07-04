@@ -640,23 +640,7 @@ public class subjectValidator {
 
         if (opcion.toLowerCase().equals("reportes")) {
 
-            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
-            // black;\">EGRESOS POR GESTION </td> \n \n"
-            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
-            // black;\">EGRESOS-REPORTES []</td> \n \n"
-            // + "</tr> \n \n"
-            // + "<tr> \n \n"
-            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
-            // black;\">INGRESOS POR GESTION </td> \n \n"
-            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
-            // black;\">INGRESOS-REPORTES [] </td> \n \n"
-            // + "</tr> \n \n"
-            // + "<tr> \n \n"
-            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
-            // black;\">ESTUDIANTES POR CARRERA </td> \n \n"
-            // + "<td style=\"text-align: left; padding: 8px; border: 1px solid
-            // black;\">ESTUDIANTES-REPORTES [] </td> \n \n"
-
+             
             reporteNegocio reportes = new reporteNegocio();
             LinkedList<String> paramsList = reportes.createList(parametros);
             switch (opcionArray[0].toLowerCase()) {
@@ -749,11 +733,11 @@ public class subjectValidator {
 
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar Docentes</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-DOCENTES [CI,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,TELEFONO,KARDEX,CURRICULUM,EMAIL,USER_ID=0]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-DOCENTES [CI,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,KARDEX,CURRICULUM,EMAIL,USER_ID=0]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Actualizar Docentes</td> \n \n"
-                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-DOCENTES [CI,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,TELEFONO,KARDEX,CURRICULUM,EMAIL,USER_ID]</td> \n \n"
+                + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">UPDATE-DOCENTES [CI,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,KARDEX,CURRICULUM,EMAIL,USER_ID]</td> \n \n"
                 + "</tr> \n \n"
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Eliminar Docentes</td> \n \n"
@@ -797,7 +781,7 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar Gestiones</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-GESTIONES [] || LIST-GESTIONES [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
+//carreras
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar carreras</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-CARRERAS [COD,DESCRIPCION,COD_GESTION]</td> \n \n"
@@ -814,7 +798,7 @@ public class subjectValidator {
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Listar carreras</td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">LIST-CARRERAS [] || LIST-CARRERAS [KEY, VALOR]</td> \n \n"
                 + "</tr> \n \n"
-
+// materias
                 + "<tr> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">Registrar  materias </td> \n \n"
                 + "<td style=\"text-align: left; padding: 8px; border: 1px solid black;\">CREATE-MATERIAS [SIGLA,DESCRIPCION,OBSERVACION,CREDITOS]</td> \n \n"

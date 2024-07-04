@@ -74,7 +74,7 @@ CREATE TABLE docentes (
     apellido_mat VARCHAR(255)   NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     kardex VARCHAR(255) NULL,
-    currilculum VARCHAR(255) NULL,
+    curriculum VARCHAR(255) NULL,
      usuario_id INT NOT NULL, -- Agregado usuario_id
      FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
 );
@@ -255,7 +255,7 @@ CREATE TABLE dias (
     nombre VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE gupo_materia_horarios ( 
+CREATE TABLE grupo_materia_horarios ( 
     grupo_sigla VARCHAR(10) NOT NULL,
     horario_id INT NOT NULL,
     dia_id INT NOT NULL,
@@ -305,37 +305,60 @@ CREATE TABLE pagos (
 
 -- // GESTION DE OFERTAS, GENERACION DE OFERTAS
 
- CREATE VIEW ofertas_view AS
+-- select g.descripcion, ca.descripcion,cm.materia_sigla,gm.descripcion,doc.nombre, dias.nombre ,h.hora_inicio, h.hora_fin
+-- from  gestiones g,carreras ca,carreras_materias cm,grupos_materias gm,docentes doc,grupo_materia_horarios gmh,horarios h, dias
+-- where g.codigo=ca.gestion_codigo and ca.sigla = cm.carrera_sigla and
+-- gm.materia_sigla= cm.materia_sigla  and gm.docente_ci = doc.ci and gm.sigla = gmh.grupo_sigla and
+-- gmh.horario_id=h.id and gmh.dia_id= dias.id
+
+CREATE VIEW ofertas AS
 SELECT 
-    m.descripcion AS "Materia",
-    g.descripcion AS "Grupo",
-    h.hora_inicio AS "Hora Inicio",
-    h.hora_fin AS "Hora Fin",
-    CONCAT(d.nombre, ' ', d.apellido_pat, ' ', d.apellido_mat) AS "Profesor",
-    ges.descripcion AS "Gestión"
-FROM 
-    materias m
-JOIN 
-    carreras_materias cm ON m.sigla = cm.materia_sigla
-JOIN 
-    grupos_materias g ON cm.carrera_sigla = g.carrera_sigla
-JOIN 
-    horarios h ON g.sigla = h.sigla
-JOIN 
-    docentes d ON g.docente_ci = d.ci
-JOIN 
-    gestiones ges ON d.gestion_codigo = ges.codigo;
-
-
-
+    g.descripcion AS gestion_descripcion, 
+    ca.descripcion AS carrera_descripcion,
+    cm.materia_sigla,
+    gm.descripcion AS grupo_materia_descripcion,
+    doc.nombre AS docente_nombre,
+    dias.nombre AS dia_nombre,
+    h.hora_inicio,
+    h.hora_fin
+FROM  
+    gestiones g
+    JOIN carreras ca ON g.codigo = ca.gestion_codigo
+    JOIN carreras_materias cm ON ca.sigla = cm.carrera_sigla
+    JOIN grupos_materias gm ON gm.materia_sigla = cm.materia_sigla
+    JOIN docentes doc ON gm.docente_ci = doc.ci
+    JOIN grupo_materia_horarios gmh ON gm.sigla = gmh.grupo_sigla
+    JOIN horarios h ON gmh.horario_id = h.id
+    JOIN dias ON gmh.dia_id = dias.id;
 
 
 /*
 REPORTES
 
-CANTIDAD DE ESTUDIANTES POR CARRERA
+Egresos por Gestión
 
-CANTIDAD DE ESTUDIANTES POR CARRERA
+
+SELECT g.descripcion AS gestion, SUM(e.monto) AS total_egresos
+FROM egresos e
+JOIN gestiones g ON e.gestion_codigo = g.codigo
+GROUP BY g.descripcion;
+
+Ingresos por Gestión
+
+SELECT g.descripcion AS gestion, SUM(p.monto) AS total_ingresos
+FROM pagos p
+JOIN estudiante_materia em ON p.estudiante_materia_id = em.id
+JOIN estudiantes e ON em.estudiante_ci = e.ci
+JOIN estudiantes_carrera ec ON e.ci = ec.estudiante_ci
+JOIN gestiones g ON ec.carrera_sigla = g.codigo
+GROUP BY g.descripcion;
+
+Estudiantes por Carrera
+
+SELECT c.descripcion AS carrera, COUNT(ec.estudiante_ci) AS num_estudiantes
+FROM estudiantes_carrera ec
+JOIN carreras c ON ec.carrera_sigla = c.sigla
+GROUP BY c.descripcion;
 
 
 
@@ -401,7 +424,7 @@ INSERT INTO carreras_materias (nivel_id, materia_sigla, carrera_sigla) VALUES
 (1, 'ADM101', 'ADM');
 
 -- Datos de grupos
-INSERT INTO grupos (sigla, descripcion, materia_sigla, carrera_sigla, docente_id) VALUES
+INSERT INTO grupos_materias (sigla, descripcion, materia_sigla, carrera_sigla, docente_id) VALUES
 ('G1', 'Grupo 1 de Matematicas', 'MAT101', 'INF', 1),
 ('G2', 'Grupo 2 de Informatica', 'INF101', 'INF', 2),
 ('G3', 'Grupo 3 de Administracion', 'ADM101', 'ADM', 2);

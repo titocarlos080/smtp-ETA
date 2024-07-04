@@ -21,3 +21,5 @@ CREATE-ESTUDIANTES [203, Lucia, Diaz, Moreno, 5559101, F, 2003-06-19, 0, luciadi
 CREATE-ESTUDIANTES [204, Sergio, Perez, Gonzalez, 5551121, M, 2004-07-08, 0, sergioperezestudiante@gmail.com]
 CREATE-ESTUDIANTES [205, Elena, Romero, Fernandez, 5553141, F, 2005-08-15, 0, elenaromeroestudiante@gmail.com]
 
+
+

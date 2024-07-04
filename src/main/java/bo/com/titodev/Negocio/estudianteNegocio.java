@@ -110,7 +110,7 @@ private estudianteDato estudiante;
             this.respuesta = "La fecha de nacimiento no es válida";
             return;
         }
-        if (!validatorUtils.validateEmail(params.get(7))) {
+        if (!validatorUtils.validateEmail(params.getLast())) {
             this.respuesta = "El email no es válido";
             return;
         }
